@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Example extends AppCompatActivity {
+public class Definition extends AppCompatActivity {
     private static List<Essential> listado = new ArrayList<>();
     private static List<Essential> listadoCompleto = new ArrayList<>();
     private List<List<String>> listaAleatoria;
@@ -40,7 +38,7 @@ public class Example extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_example);
+        setContentView(R.layout.activity_definition);
         superior =(LinearLayout) findViewById(R.id.superior);
         inferior =(LinearLayout) findViewById(R.id.inferior);
         cargarData();
@@ -48,9 +46,10 @@ public class Example extends AppCompatActivity {
         desplegarEx();
     }
 
+
     public void cargarData()
     {
-        listado = Controlador.ModuloEjemplo(this);
+        listado = Controlador.ModuloDefinition(this);
     }
 
     public List<String> crearListaNumeros(String s)
@@ -65,7 +64,7 @@ public class Example extends AppCompatActivity {
             num = aleatorio.nextInt(ej.length);
             if(!numeros.contains(num))
             {
-              numeros.add(num);
+                numeros.add(num);
             }
         }
         for(Integer nume: numeros)
@@ -83,13 +82,13 @@ public class Example extends AppCompatActivity {
         listaOrganizada= new ArrayList<>();
         for(Essential ess: listado)
         {
-            ejemplo = ess.getExample();
+            ejemplo = ess.getMeaning();
             listaAleatoria.add(crearListaNumeros(ejemplo));
         }
         for(Essential ess: listado)
         {
-          frase= ess.getExample().split(" ");
-          listaOrganizada.add(Arrays.asList(frase));
+            frase= ess.getMeaning().split(" ");
+            listaOrganizada.add(Arrays.asList(frase));
         }
     }
 
@@ -211,7 +210,7 @@ public class Example extends AppCompatActivity {
 
     private void reproducir()
     {
-        Reproductor.reproducir(listado.get(orden).getWord()+"_E.mp3",this);
+        Reproductor.reproducir(listado.get(orden).getWord()+"_D.mp3",this);
     }
 
     public void prueba(View v)
@@ -224,16 +223,9 @@ public class Example extends AppCompatActivity {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
         {
-            listadoCompleto.get(ess.getOrder()).setStatusExample(1);
+            listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
+            listadoCompleto.get(ess.getOrder()).setStatusExample(2);
         }
         Data.saveFile(listadoCompleto,path,this);
     }
 }
-
-
-
-
-
-
-
-

@@ -7,13 +7,18 @@ import android.media.MediaPlayer;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-public class Play
-{
-    MediaPlayer mp;
-    private static final int MY_PERMISSION_REQUEST_READ_EXTERNAL =1;
+import com.example.essentialallinone.permission.Permission;
 
-    public void reproducir(String path,Activity activity) {
-        this.checkPermission(activity);
+public class Reproductor
+{
+    private static android.media.MediaPlayer mp;
+    private static final int MY_PERMISSION_REQUEST_READ_EXTERNAL =1;
+    private static String url = "/sdcard/DBAudio/Audio/";
+    private  static String path;
+
+   static public void reproducir(String word,Activity activity) {
+       Permission.checkReadPermission(activity);
+       path = url+word;
         try
         {
             if(mp == null)
@@ -34,17 +39,17 @@ public class Play
 
     }
 
-    public void destruir() {
+    private static void destruir() {
         if (mp != null) {
             mp.release();
             mp = null;
         }
     }
 
-    public void playAudio(String path) {
+    private static void playAudio(String path) {
         try {
 
-            mp = new MediaPlayer();
+            mp = new android.media.MediaPlayer();
             mp.setDataSource(path);
             mp.prepare();
             mp.start();

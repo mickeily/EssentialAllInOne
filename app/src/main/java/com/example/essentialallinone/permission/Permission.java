@@ -29,4 +29,22 @@ public  class Permission
         }
     }
 
+    public static void checkPermissionWrite(Activity activity)
+    {
+        if(ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+        {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(activity,Manifest.permission.WRITE_EXTERNAL_STORAGE))
+            {
+
+            }
+            else
+            {
+                ActivityCompat.requestPermissions(activity,new String[]
+                        {Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSION_REQUEST_WRITE_EXTERNAL);
+            }
+        }
+
+    }
+
 }

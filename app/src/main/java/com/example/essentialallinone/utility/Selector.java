@@ -52,6 +52,10 @@ public class Selector {
                 bandera = 8;
                 return bandera;
             }
+            else if (ess.getStatusExample() == 1) {
+                bandera = 9;
+                return bandera;
+            }
         }
         return bandera;
     }

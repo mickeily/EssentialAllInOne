@@ -3,6 +3,7 @@
     package="com.example.essentialallinone">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,6 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EssentialAllInOne">
+        <activity
+            android:name=".activity.Match"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ListeningAndReading"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MultiChoise"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Definition"
+            android:exported="false" />
         <activity
             android:name=".activity.Example"
             android:exported="false" />
