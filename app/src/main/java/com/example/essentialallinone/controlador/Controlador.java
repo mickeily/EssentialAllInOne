@@ -135,6 +135,73 @@ public class Controlador
         return listadoEspecifico;
     }
 
+    public static List<Essential> ModuloMatch(Activity activity)
+    {
+        listadoEspecifico= new ArrayList<>();
+
+        if(listadoPrincipal.isEmpty())
+        {
+            cargar(activity);
+        }
+
+        for(Essential ess: listadoPrincipal)
+        {
+            if(ess.getStatusMatch()==0)
+            {
+                listadoEspecifico.add(ess);
+            }
+            if(listadoEspecifico.size()>=3)
+            {
+                break;
+            }
+        }
+        return listadoEspecifico;
+    }
+    public static List<Essential> ModuloHang(Activity activity)
+    {
+        listadoEspecifico= new ArrayList<>();
+
+        if(listadoPrincipal.isEmpty())
+        {
+            cargar(activity);
+        }
+
+        for(Essential ess: listadoPrincipal)
+        {
+            if(ess.getStatusHang()==0)
+            {
+                listadoEspecifico.add(ess);
+            }
+            if(listadoEspecifico.size()>=3)
+            {
+                break;
+            }
+        }
+        return listadoEspecifico;
+    }
+    public static List<Essential> ModuloActive(Activity activity)
+    {
+        listadoEspecifico= new ArrayList<>();
+
+        if(listadoPrincipal.isEmpty())
+        {
+            cargar(activity);
+        }
+
+        for(Essential ess: listadoPrincipal)
+        {
+            if(ess.getStatusActive()==0)
+            {
+                listadoEspecifico.add(ess);
+            }
+            if(listadoEspecifico.size()>=3)
+            {
+                break;
+            }
+        }
+        return listadoEspecifico;
+    }
+
     public static List<Essential> getListadoPrincipal( Activity activity)
     {
         if(listadoPrincipal.isEmpty())
@@ -145,4 +212,5 @@ public class Controlador
         return  listadoPrincipal;
 
     }
+
 }

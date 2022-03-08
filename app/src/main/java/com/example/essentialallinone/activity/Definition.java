@@ -2,6 +2,7 @@ package com.example.essentialallinone.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -41,6 +42,7 @@ public class Definition extends AppCompatActivity {
         setContentView(R.layout.activity_definition);
         superior =(LinearLayout) findViewById(R.id.superior);
         inferior =(LinearLayout) findViewById(R.id.inferior);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         cargarData();
         cargarListaEjemplos();
         desplegarEx();

@@ -2,6 +2,7 @@ package com.example.essentialallinone.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,7 @@ public class Example extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         superior =(LinearLayout) findViewById(R.id.superior);
         inferior =(LinearLayout) findViewById(R.id.inferior);
         cargarData();
