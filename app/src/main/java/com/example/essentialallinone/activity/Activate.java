@@ -12,6 +12,7 @@ import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Fecha;
 import com.example.essentialallinone.utility.Reproductor;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class Activate extends AppCompatActivity {
 
     private void cargar()
     {
-        listado = Controlador.ModuloActive(this);
+        listado = Controlador.moduloActive(this);
     }
 
     private void setListaNumerica()
@@ -107,7 +108,7 @@ public class Activate extends AppCompatActivity {
 
         for(Integer i: listaNumerica)
         {
-            if(i<3)
+            if(i<2)
             {
                 flag = true;
                 break;
@@ -129,9 +130,9 @@ public class Activate extends AppCompatActivity {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
         {
-            listadoCompleto.get(ess.getOrder()).setStatusActive(1);
+            listadoCompleto.get(ess.getOrder()).setStatusActive(2);
             listadoCompleto.get(ess.getOrder()).setStatusHang(2);
-
+            //listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
         }
         Data.saveFile(listadoCompleto,path,this);
     }

@@ -52,7 +52,7 @@ public class Example extends AppCompatActivity {
 
     public void cargarData()
     {
-        listado = Controlador.ModuloEjemplo(this);
+        listado = Controlador.moduloEjemplo(this);
     }
 
     public List<String> crearListaNumeros(String s)

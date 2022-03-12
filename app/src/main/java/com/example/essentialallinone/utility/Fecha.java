@@ -8,14 +8,14 @@ import java.util.concurrent.TimeUnit;
 
 public class Fecha
 {
-  private Calendar calendario1 = Calendar.getInstance();
-  private Calendar calendario2 = Calendar.getInstance();
-    private Calendar calendario3 = Calendar.getInstance();
-  private Date date;
-  private String fehaHoy;
+  private static Calendar calendario1 = Calendar.getInstance();
+  private static Calendar calendario2 = Calendar.getInstance();
+  private Calendar calendario3 = Calendar.getInstance();
+  private static Date date;
+  private static String fehaHoy;
 
 
-  public String getFehaHoy()
+  public static String getFehaHoy()
   {
       date = new Date();
       int agno = (date.getYear()-100)+2000;
@@ -29,7 +29,7 @@ public class Fecha
       return  fehaHoy;
   }
 
-  public long getHoras(String fecha)
+  public static long getHoras(String fecha)
   {
       String[] fechaArr = fecha.split(":");
       int agno = Integer.parseInt(fechaArr[0]);

@@ -51,7 +51,7 @@ public class Definition extends AppCompatActivity {
 
     public void cargarData()
     {
-        listado = Controlador.ModuloDefinition(this);
+        listado = Controlador.moduloDefinition(this);
     }
 
     public List<String> crearListaNumeros(String s)

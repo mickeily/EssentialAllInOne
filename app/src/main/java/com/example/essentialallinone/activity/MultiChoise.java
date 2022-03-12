@@ -52,7 +52,7 @@ public class MultiChoise extends AppCompatActivity {
 
     private void cargar()
     {
-        listado = Controlador.ModuloMultiChoise(this);
+        listado = Controlador.moduloMultiChoise(this);
     }
 
     private void seleccionarPregunta()

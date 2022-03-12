@@ -51,7 +51,7 @@ public class Hanged extends AppCompatActivity {
 
     private void cargar()
     {
-        listado = Controlador.ModuloHang(this);
+        listado = Controlador.moduloHang(this);
     }
     private void setListaNumerica()
     {
@@ -166,7 +166,7 @@ public class Hanged extends AppCompatActivity {
 
         for(Integer i: listaNumerica)
         {
-            if(i<3)
+            if(i<2)
             {
                 flag = true;
                 break;
@@ -201,7 +201,7 @@ public class Hanged extends AppCompatActivity {
         {
             listadoCompleto.get(ess.getOrder()).setStatusHang(1);
             listadoCompleto.get(ess.getOrder()).setStatusMatch(2);
-            listadoCompleto.get(ess.getOrder()).setStatusPrincipal(0);
+            listadoCompleto.get(ess.getOrder()).setStatusComplete(0);
         }
         Data.saveFile(listadoCompleto,path,this);
     }

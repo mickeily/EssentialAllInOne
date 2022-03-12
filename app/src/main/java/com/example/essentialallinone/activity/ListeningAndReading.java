@@ -40,7 +40,7 @@ public class ListeningAndReading extends AppCompatActivity {
 
     public void cargarData()
     {
-        listado = Controlador.ModuloReadAndListen(this,objetivo);
+        listado = Controlador.moduloReadAndListen(this,objetivo);
     }
     private void seleccionar()
     {

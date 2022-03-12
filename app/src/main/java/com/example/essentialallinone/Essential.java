@@ -11,7 +11,7 @@ public class Essential
     private int statusMatch;
     private int statusHang;
     private int statusActive;
-    private int statusPrincipal;
+    private int statusComplete;
     private int pointPrincipal;
     private String date;
     private String example;
@@ -36,7 +36,7 @@ public class Essential
         this.statusMatch = Integer.parseInt(db[6]);
         this.statusHang = Integer.parseInt(db[7]);
         this.statusActive = Integer.parseInt(db[8]);
-        this.statusPrincipal = Integer.parseInt(db[9]);
+        this.statusComplete = Integer.parseInt(db[9]);
         this.pointPrincipal= Integer.parseInt(db[10]);
         this.date = db[11];
         this.example= db[12];
@@ -119,12 +119,12 @@ public class Essential
         this.statusActive = statusActive;
     }
 
-    public int getStatusPrincipal() {
-        return statusPrincipal;
+    public int getStatusComplete() {
+        return statusComplete;
     }
 
-    public void setStatusPrincipal(int statusPrincipal) {
-        this.statusPrincipal = statusPrincipal;
+    public void setStatusComplete(int statusComplete) {
+        this.statusComplete = statusComplete;
     }
 
     public int getPointPrincipal() {
@@ -165,6 +165,30 @@ public class Essential
 
     public String getUnit() {
         return unit;
+    }
+
+    private  String toString (Essential ess)
+    {
+        String cadena="";
+        cadena = ess.getOrder()+","+
+                ess.getStatusExample()+","+
+                ess.getStatusDefinition()+","+
+                ess.getStatusComplete()+","+
+                ess.getStatusMultiChoise()+","+
+                ess.getStatusRead()+","+
+                ess.getStatusListen()+","+
+                ess.getStatusMatch()+","+
+                ess.getStatusHang()+","+
+                ess.getStatusActive()+","+
+                ess.getPointPrincipal()+","+
+                ess.getDate()+","+
+                ess.getExample()+","+
+                ess.getMeaning()+","+
+                ess.getBook()+","+
+                ess.getUnit()+","+
+                ess.getWord()+","+
+                ess.getType();
+        return cadena;
     }
 
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EssentialAllInOne</string>
+    <string name="round">2</string>
 </resources>

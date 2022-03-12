@@ -1,14 +1,10 @@
 package com.example.essentialallinone.Data;
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.widget.Toast;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.example.essentialallinone.Essential;
+import com.example.essentialallinone.activity.Termino;
 import com.example.essentialallinone.permission.Permission;
 
 import java.io.BufferedReader;
@@ -22,13 +18,15 @@ import java.util.List;
 
 public class Data
 {
-    private static String databasePath = "/sdcard/DB/DB.csv";
+    //private static String databasePath = "/sdcard/DB/DB.csv";
 
     private  static Essential essential ;
+    private  static Termino cuento ;
     private  static List<Essential> listado;
+    private static List<Termino> cuentos;
     private static String cadena ="";
 
-    public static List<Essential> readFile(Activity activity)
+    public static List<Essential> readFile(Activity activity,String databasePath)
     {
         Permission.checkReadPermission(activity);
 
@@ -50,6 +48,26 @@ public class Data
         }
         return listado;
     }
+    public static List<Termino> readFileCuento(Activity activity, String cuentoPath)
+    {
+        Permission.checkReadPermission(activity);
+
+        String archivoTemp[]= new String[200];
+        cuentos = new ArrayList<>();
+        try{
+            FileReader fileReader = new FileReader(cuentoPath);
+            BufferedReader bf = new BufferedReader(fileReader);
+            String linea = "";
+            while ((linea = bf.readLine()) !=null)
+            {
+                cuentos.add(new Termino(linea.split(",")));
+            }
+        }catch (Exception e)
+        {
+            Toast.makeText(activity,e+"",Toast.LENGTH_LONG).show();
+        }
+        return cuentos;
+    }
 
     public static void saveFile(List<Essential> lita ,String path, Activity activity)
     {
@@ -62,7 +80,7 @@ public class Data
 
             for(Essential ess: lita)
             {
-                mow.append(concatener(ess)+"\n");
+                mow.append(ess.toString()+"\n");
             }
             mow.close();
             fout.close();
@@ -82,7 +100,7 @@ public class Data
                  ess.getStatusMatch()+","+
                  ess.getStatusHang()+","+
                  ess.getStatusActive()+","+
-                 ess.getStatusPrincipal()+","+
+                 ess.getStatusComplete()+","+
                  ess.getPointPrincipal()+","+
                  ess.getDate()+","+
                  ess.getExample()+","+
@@ -93,6 +111,8 @@ public class Data
                  ess.getType();
         return cadena;
     }
+
+
 }
 
 

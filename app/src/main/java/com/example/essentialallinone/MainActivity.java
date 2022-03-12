@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.essentialallinone.activity.Activate;
+import com.example.essentialallinone.activity.Cardinal;
+import com.example.essentialallinone.activity.Complete;
+import com.example.essentialallinone.activity.Termino;
 import com.example.essentialallinone.activity.Definition;
 import com.example.essentialallinone.activity.Example;
 import com.example.essentialallinone.activity.Hanged;
@@ -15,14 +18,20 @@ import com.example.essentialallinone.activity.Match;
 import com.example.essentialallinone.activity.MultiChoise;
 import com.example.essentialallinone.utility.Selector;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     private static int objetivo;
+    public static final int CANTIDADCAGAR = 20;
+    public static final int ROUNDS =5;
+    private static List<Termino> cuentos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        prueba();
+        //prueba();
+        complete();
 
     }
     public void prueba()
@@ -73,14 +82,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(activate);
                 break;
             }
+
             case 2:
             {
-                Toast.makeText(this,"entro en 2",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"entro en 1",Toast.LENGTH_LONG).show();
                 break;
             }
             case 1:
             {
-                Toast.makeText(this,"entro en 1",Toast.LENGTH_LONG).show();
+                Intent cardinal = new Intent(this, Cardinal.class);
+                startActivity(cardinal);
                 break;
             }
         }
@@ -89,5 +100,15 @@ public class MainActivity extends AppCompatActivity {
     public  int getObjetivo()
     {
         return objetivo;
+    }
+
+    public void complete()
+    {
+        Intent complete = new Intent(this, Complete.class);
+        startActivity(complete);
+        //cuentos = new ArrayList<>();
+        //cuentos = Controlador.cargarCuentos(this);
+        //int a =0;
+
     }
 }

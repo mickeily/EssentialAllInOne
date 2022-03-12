@@ -38,7 +38,7 @@ public class Match extends AppCompatActivity {
 
     public void cargarData()
     {
-        listado = Controlador.ModuloMatch(this);
+        listado = Controlador.moduloMatch(this);
     }
 
     public void setArchivoModificado() {
