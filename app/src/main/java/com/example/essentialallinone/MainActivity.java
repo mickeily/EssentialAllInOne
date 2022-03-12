@@ -53,39 +53,40 @@ public class MainActivity extends AppCompatActivity {
             }
             case 8:
             {
-                Intent multiChoise = new Intent(this, MultiChoise.class);
-                startActivity(multiChoise);
+                Intent complete = new Intent(this, Complete.class);
+                startActivity(complete);
                 break;
             }
             case 7:
+            {
+                Intent multichoise = new Intent(this, MultiChoise.class);
+                startActivity(listeningAndReading);
+                break;
+            }
+            case 5:
             case 6:
             {
                 Intent listeningAndReading = new Intent(this, ListeningAndReading.class);
                 startActivity(listeningAndReading);
                 break;
             }
-            case 5:
+            case 4:
             {
                 Intent match = new Intent(this, Match.class);
                 startActivity(match);
                 break;
             }
-            case 4:
+            case 3:
             {
                 Intent hanged = new Intent(this, Hanged.class);
                 startActivity(hanged);
                 break;
             }
-            case 3:
-            {
-                Intent activate = new Intent(this, Activate.class);
-                startActivity(activate);
-                break;
-            }
 
             case 2:
             {
-                Toast.makeText(this,"entro en 1",Toast.LENGTH_LONG).show();
+                Intent activate = new Intent(this, Activate.class);
+                startActivity(activate);
                 break;
             }
             case 1:
