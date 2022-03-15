@@ -3,6 +3,7 @@ package com.example.essentialallinone.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -12,20 +13,22 @@ import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Const;
+import com.example.essentialallinone.utility.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class MultiChoise extends AppCompatActivity {
-    private static List<Essential> listado = new ArrayList<>();
-    private List<Essential> preguntasUsadas = new ArrayList<>();
+    private List<Essential> listado = new ArrayList<>();
     private List<Essential> listaRespuestas = new ArrayList<>();
-    private static List<Essential> listadoCompleto = new ArrayList<>();
-    private String path = "/sdcard/DB/DB.csv";
-    private Essential preguntaEnUso = new Essential();
+    private List<Essential> listadoCompleto = new ArrayList<>();
     private Random aleatorio = new Random();
-    private  int orden=0;
+    private int objetivo =0;
+    private int tablaPosiciones[];
+    TextView respuestaCorrecta;
+
 
     TextView pregunta;
     RadioGroup radioGroup;
@@ -36,11 +39,13 @@ public class MultiChoise extends AppCompatActivity {
         setContentView(R.layout.activity_multi_choise);
         pregunta= (TextView)findViewById(R.id.pregunta);
         radioGroup=(RadioGroup)findViewById(R.id.radio_group);
+        respuestaCorrecta= (TextView)findViewById(R.id.resp_correcta);
         cargar();
-        seleccionarPregunta();
-        proyectarPregunta();
-        seleccionarRespuestas();
-        proyectarRespuestas();
+        inicializarTablaPosiciones();
+        seleccionarElemento();
+        seleccionarOpsiones();
+        desplegarPregunta();
+        desplegarOpciones();
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -50,108 +55,107 @@ public class MultiChoise extends AppCompatActivity {
         });
     }
 
+    //El metodo cargar carga la informacion correspondiente a este modulo
     private void cargar()
     {
         listado = Controlador.moduloMultiChoise(this);
     }
 
-    private void seleccionarPregunta()
+    //Este metodo crea la tabla de posiciones del tamano de listado de elementos a procesar
+    private void inicializarTablaPosiciones()
     {
-        preguntaEnUso=null;
+        tablaPosiciones = new int[listado.size()];
+    }
 
-        while (preguntaEnUso==null)
+    // Este metodo selecciona un elemento para se procesado, el cual debe haber aparecido menor o igual
+    // veces que el que tenga menor aparariciones
+    private void seleccionarElemento()
+    {
+        objetivo = aleatorio.nextInt(tablaPosiciones.length);
+        for(int i=0;i<tablaPosiciones.length;i++)
         {
-            orden = aleatorio.nextInt(listado.size());
-            if(!preguntasUsadas.contains(listado.get(orden)))
+            if(tablaPosiciones[i]<tablaPosiciones[objetivo])
             {
-                preguntaEnUso = listado.get(orden);
+                objetivo=i;
             }
         }
     }
 
-    private void proyectarPregunta()
+    //Este metodo selecciona las opsiones que se seran despleagas incluyendo la respuesta correpta
+    public void seleccionarOpsiones()
     {
-        pregunta.setText(convertSentence(preguntaEnUso.getMeaning(),preguntaEnUso.getWord()));
-    }
-
-    private void seleccionarRespuestas()
-    {
-        int numero =0;
         listaRespuestas.clear();
-        listaRespuestas.add(preguntaEnUso);
-        while (listaRespuestas.size()<3)
+        int obj = 0;
+        listaRespuestas.add(listado.get(objetivo));
+        while (listaRespuestas.size()<Const.CANTIDAD_RESPUESTAS)
         {
-            numero = aleatorio.nextInt(listado.size());
-            if(!listaRespuestas.contains(listado.get(numero)))
+            obj = aleatorio.nextInt(listado.size());
+            if(!listaRespuestas.contains(listado.get(obj)))
             {
-              listaRespuestas.add(listado.get(numero));
+               listaRespuestas.add(listado.get(obj));
             }
         }
     }
 
-    private void proyectarRespuestas()
+    private void desplegarPregunta()
     {
-        List<Integer> numeros = listaDeNumeros();
-        String palabra ="";
-        for(Integer num:numeros)
-        {
-           crearRadioButton(listaRespuestas.get(num).getWord());
-        }
+        pregunta.setText(convertSentence(listado.get(objetivo).getMeaning(),listado.get(objetivo).getWord()));
+        pregunta.setTextSize(18);
+    }
 
+    private void desplegarOpciones()
+    {
+        List<Integer> opciones = Utility.listaNumerica(listaRespuestas.size());
+        for(Integer posicion: opciones)
+        {
+            crearRadioButton(listaRespuestas.get(posicion).getWord());
+        }
     }
 
     private void crearRadioButton(String texto)
     {
+        TextView caja = new TextView(this);
         RadioButton  radio= new RadioButton(this);
         radio.setText(texto);
+        radio.setTextSize(20);
+        radio.setPadding(0,0,0,0);
         radioGroup.addView(radio);
-    }
-
-    private List<Integer> listaDeNumeros()
-    {
-        int numero =0;
-        List<Integer> numeros = new ArrayList<>();
-
-        while (numeros.size()<3)
-        {
-            numero = aleatorio.nextInt(3);
-            if(!numeros.contains(numero))
-            {
-              numeros.add(numero);
-            }
-        }
-        return numeros;
+        radioGroup.addView(caja);
     }
 
     private void comprobar(String texto)
     {
-        if(texto.equalsIgnoreCase(preguntaEnUso.getWord()))
+        if(texto.equalsIgnoreCase(listado.get(objetivo).getWord()))
         {
-            preguntasUsadas.add(preguntaEnUso);
-            if(preguntasUsadas.size()<listado.size())
-            {
-               reiniciar();
-            }
-            else
-            {
-                guardar();
-                Toast.makeText(this, "Saved file", Toast.LENGTH_SHORT).show();
-            }
+            respuestaCorrecta.setText("");
+            respuestaCorrecta.setTextSize(18);
+            tablaPosiciones[objetivo]++;
+            reiniciar();
+
         }
         else
         {
+            respuestaCorrecta.setText(listado.get(objetivo).getMeaning());
+            respuestaCorrecta.setTextSize(18);
            reiniciar();
         }
-
     }
 
     private void reiniciar()
     {
         radioGroup.removeAllViews();
-        seleccionarPregunta();
-        proyectarPregunta();
-        seleccionarRespuestas();
-        proyectarRespuestas();
+        if(comprobarSiFinalizar()==false)
+        {
+            seleccionarElemento();
+            seleccionarOpsiones();
+            desplegarPregunta();
+            desplegarOpciones();
+        }
+        else
+        {
+            guardar();
+            this.finish();
+        }
 
     }
     public String convertSentence(String oracion,String palabra)
@@ -167,8 +171,22 @@ public class MultiChoise extends AppCompatActivity {
         for(Essential ess: listado)
         {
             listadoCompleto.get(ess.getOrder()).setStatusMultiChoise(1);
-            listadoCompleto.get(ess.getOrder()).setStatusDefinition(2);
+            listadoCompleto.get(ess.getOrder()).setStatusComplete(2);
         }
-        Data.saveFile(listadoCompleto,path,this);
+        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+    }
+
+    public boolean comprobarSiFinalizar()
+    {
+        boolean flag = true;
+        for(int puntuacion: tablaPosiciones)
+        {
+            if(puntuacion<Const.ROUNDS)
+            {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 }

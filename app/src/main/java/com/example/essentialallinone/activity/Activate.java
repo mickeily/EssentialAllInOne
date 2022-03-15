@@ -12,6 +12,7 @@ import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Const;
 import com.example.essentialallinone.utility.Fecha;
 import com.example.essentialallinone.utility.Reproductor;
 
@@ -21,23 +22,20 @@ import java.util.Random;
 
 public class Activate extends AppCompatActivity {
     private static List<Essential> listado = new ArrayList<>();
-    private static List<Essential> listadoEnUso = new ArrayList<>();
     private static List<Essential> listadoCompleto = new ArrayList<>();
-    private String path = "/sdcard/DB/DB.csv";
-    Essential enUso= new Essential();
     EditText texto;
     TextView respuesta;
-    private int listaNumerica[];
     private int objetivo;
     Random aleatorio = new Random();
+    private int tablaPosiciones[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activate);
+        respuesta=(TextView)findViewById(R.id.respuesta);
         cargar();
-        setListaNumerica();
-        seleccionarElemento();
+        inicializarTablaPosiciones();
         reproducir();
     }
 
@@ -46,26 +44,21 @@ public class Activate extends AppCompatActivity {
         listado = Controlador.moduloActive(this);
     }
 
-    private void setListaNumerica()
+    private void inicializarTablaPosiciones()
     {
-        listaNumerica= new int[listado.size()];
+        tablaPosiciones = new int[listado.size()];
     }
 
-    public void seleccionarElemento()
+    private void seleccionarElemento()
     {
-        int contador =0;
-        objetivo = aleatorio.nextInt(listado.size());
-        while (contador<listaNumerica.length)
+        objetivo = aleatorio.nextInt(tablaPosiciones.length);
+        for(int i=0;i<tablaPosiciones.length;i++)
         {
-            if(listaNumerica[contador]<listaNumerica[objetivo])
+            if(tablaPosiciones[i]<tablaPosiciones[objetivo])
             {
-                objetivo= contador;
-                break;
+                objetivo=i;
             }
-            contador++;
         }
-        enUso= listado.get(objetivo);
-
     }
     public void reproducir()
     {
@@ -74,9 +67,12 @@ public class Activate extends AppCompatActivity {
 
     }
 
+
+
+
     public void comprobar(View view)
     {
-        respuesta=(TextView)findViewById(R.id.respuesta);
+
        texto = (EditText) findViewById(R.id.texto_principal);
 
        if(texto.getText().toString().equalsIgnoreCase(""))
@@ -90,6 +86,7 @@ public class Activate extends AppCompatActivity {
                texto.setText("");
                respuesta.setText("");
                actualizar();
+               reiniciar();
            }
            else
            {
@@ -103,26 +100,7 @@ public class Activate extends AppCompatActivity {
 
     private void actualizar()
     {
-        listaNumerica[objetivo]++;
-        boolean flag = false;
-
-        for(Integer i: listaNumerica)
-        {
-            if(i<2)
-            {
-                flag = true;
-                break;
-            }
-        }
-        if(flag==true)
-        {
-            reiniciar();
-        }
-        else
-        {
-            guardar();
-            Toast.makeText(this, "Saved file", Toast.LENGTH_SHORT).show();
-        }
+        tablaPosiciones[objetivo]++;
     }
 
     private void guardar()
@@ -132,15 +110,38 @@ public class Activate extends AppCompatActivity {
         {
             listadoCompleto.get(ess.getOrder()).setStatusActive(2);
             listadoCompleto.get(ess.getOrder()).setStatusHang(2);
-            //listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
+            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
         }
-        Data.saveFile(listadoCompleto,path,this);
+        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        this.finish();
     }
 
     private void reiniciar()
     {
-        seleccionarElemento();
-        reproducir();
+        if(comprobarSiFinalizar()==false)
+        {
+            seleccionarElemento();
+            reproducir();
+        }
+        else
+        {
+            guardar();
+            //Toast.makeText(this,"Finish",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public boolean comprobarSiFinalizar()
+    {
+        boolean flag = true;
+        for(int puntuacion: tablaPosiciones)
+        {
+            if(puntuacion<Const.ROUNDS)
+            {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 
 

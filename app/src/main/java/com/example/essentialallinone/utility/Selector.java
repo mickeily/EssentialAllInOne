@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
+import com.example.essentialallinone.MainActivity;
 import com.example.essentialallinone.controlador.Controlador;
 
 import java.util.ArrayList;
@@ -45,12 +46,15 @@ public class Selector {
             } else if (ess.getStatusMultiChoise() == 1) {
                 bandera = 6;
                 return bandera;
+            } else if (ess.getStatusComplete() == 1) {
+                    bandera = 7;
+                    return bandera;
             } else if (ess.getStatusDefinition() == 1) {
-                bandera = 7;
+                bandera = 8;
                 return bandera;
             }
             else if (ess.getStatusExample() == 1) {
-                bandera = 8;
+                bandera = 9;
                 return bandera;
             }
         }
@@ -61,19 +65,19 @@ public class Selector {
         switch (ess.getPointPrincipal())
         {
             case 0: {
-                if (Fecha.getHoras(ess.getDate()) > 24 && ess.getStatusActive() == 2) {
+                if (Fecha.getHoras(ess.getDate()) >= Const.UNODIA && ess.getStatusActive() == 2) {
                     bandera = 1;
                 }
             }
             break;
             case 1: {
-                if (Fecha.getHoras(ess.getDate()) > 72 && ess.getStatusActive() == 2) {
+                if (Fecha.getHoras(ess.getDate()) > Const.TRESDIAS && ess.getStatusActive() == 2) {
                     bandera = 1;
                 }
             }
             break;
             case 2: {
-                if (Fecha.getHoras(ess.getDate()) > 120 && ess.getStatusActive() == 2) {
+                if (Fecha.getHoras(ess.getDate()) > Const.CINCODIAS && ess.getStatusActive() == 2) {
                     bandera = 1;
                 }
             }
@@ -84,7 +88,7 @@ public class Selector {
             case 6:
             case 7:
             {
-                if (Fecha.getHoras(ess.getDate()) > 168 && ess.getStatusActive() == 2) {
+                if (Fecha.getHoras(ess.getDate()) > Const.SIETEDIAS && ess.getStatusActive() == 2) {
                     bandera = 1;
                 }
             }

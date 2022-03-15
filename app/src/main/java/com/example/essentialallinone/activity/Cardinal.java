@@ -11,6 +11,7 @@ import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Const;
 import com.example.essentialallinone.utility.Fecha;
 import com.example.essentialallinone.utility.Reproductor;
 
@@ -23,9 +24,10 @@ public class Cardinal extends AppCompatActivity
     private static List<Essential> listadoEnUso = new ArrayList<>();
     private static List<Essential> listadoCompleto = new ArrayList<>();
     private int orden=0;
+
     EditText texto;
     TextView respuesta;
-    private String path = "/sdcard/DB/DB.csv";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +76,15 @@ public class Cardinal extends AppCompatActivity
     }
 
     private void actualizar(int incremento) {
-        if (incremento == 1) {
+        if (incremento == 1)
+        {
             listado.get(orden).setPointPrincipal(listado.get(orden).getPointPrincipal() + 1);
         } else {
             listado.get(orden).setStatusActive(0);
-            if (listado.get(orden).getPointPrincipal() > 0) {
+            listado.get(orden).setStatusHang(1);
+
+            if (listado.get(orden).getPointPrincipal() > 0)
+            {
                 listado.get(orden).setStatusComplete(listado.get(orden).getPointPrincipal() + 1);
             }
         }
@@ -107,8 +113,11 @@ public class Cardinal extends AppCompatActivity
             listadoCompleto.get(ess.getOrder()).setDate(ess.getDate());
             listadoCompleto.get(ess.getOrder()).setPointPrincipal(ess.getPointPrincipal());
             listadoCompleto.get(ess.getOrder()).setStatusActive(ess.getStatusActive());
+            listadoCompleto.get(ess.getOrder()).setStatusHang(ess.getStatusHang());
+
         }
-        Data.saveFile(listadoCompleto,path,this);
+        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        this.finish();
     }
 
 }

@@ -6,6 +6,7 @@ import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.MainActivity;
 import com.example.essentialallinone.activity.Termino;
+import com.example.essentialallinone.utility.Const;
 import com.example.essentialallinone.utility.Fecha;
 
 import java.util.ArrayList;
@@ -18,11 +19,11 @@ public class Controlador
     private static List<Essential> listadoEspecifico;
     private static List<Termino> cuentos;
     private static MainActivity mainActivity = new MainActivity();
-    private static String databasePath = "/sdcard/DB/DB.csv";
-    private static String cuentoPath = "/sdcard/DB/Todas.csv";
+    private static int orden=0;
+
 
     private static void cargar(Activity activity) {
-        listadoPrincipal = Data.readFile(activity,databasePath);
+        listadoPrincipal = Data.readFile(activity, Const.URL_DATABASE);
     }
 
     public static List<Essential> moduloEjemplo(Activity activity)
@@ -33,13 +34,14 @@ public class Controlador
             cargar(activity);
         }
 
+
         for(Essential ess: listadoPrincipal)
         {
             if(ess.getStatusExample()==0)
             {
                 listadoEspecifico.add(ess);
             }
-            if(listadoEspecifico.size()>=MainActivity.CANTIDADCAGAR)
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
             {
                 break;
             }
@@ -60,7 +62,7 @@ public class Controlador
             {
                 listadoEspecifico.add(ess);
             }
-            if(listadoEspecifico.size()>=MainActivity.CANTIDADCAGAR)
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
             {
                 break;
             }
@@ -81,7 +83,7 @@ public class Controlador
             {
                 listadoEspecifico.add(ess);
             }
-            if(listadoEspecifico.size()>=MainActivity.CANTIDADCAGAR)
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
             {
                 break;
             }
@@ -89,7 +91,7 @@ public class Controlador
         return listadoEspecifico;
     }
 
-    public static List<Essential> moduloReadAndListen(Activity activity, int objetivo)
+    public static List<Essential> moduloRead(Activity activity)
     {
         listadoEspecifico= new ArrayList<>();
 
@@ -97,42 +99,36 @@ public class Controlador
         {
             cargar(activity);
         }
-        if(objetivo==7)
-        {
-            for(Essential ess: listadoPrincipal)
-            {
-                if(ess.getStatusRead()==0)
-                {
-                    listadoEspecifico.add(ess);
-                }
-                if(listadoEspecifico.size()>=MainActivity.CANTIDADCAGAR)
-                {
-                    break;
-                }
-            }
-        }
-        else
-        {
-            for(Essential ess: listadoPrincipal)
-            {
-                if(ess.getStatusListen()==0)
-                {
-                    listadoEspecifico.add(ess);
-                }
-                if(listadoEspecifico.size()>=3)
-                {
-                    break;
-                }
-            }
-        }
-
         for(Essential ess: listadoPrincipal)
         {
-            if(ess.getStatusMultiChoise()==0)
+            if(ess.getStatusRead()==0)
             {
                 listadoEspecifico.add(ess);
             }
-            if(listadoEspecifico.size()>=3)
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
+            {
+                break;
+            }
+        }
+        return listadoEspecifico;
+
+
+    }
+    public static List<Essential> moduloListen(Activity activity)
+    {
+        listadoEspecifico= new ArrayList<>();
+
+        if(listadoPrincipal.isEmpty())
+        {
+            cargar(activity);
+        }
+        for(Essential ess: listadoPrincipal)
+        {
+            if(ess.getStatusListen()==0)
+            {
+                listadoEspecifico.add(ess);
+            }
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
             {
                 break;
             }
@@ -155,7 +151,7 @@ public class Controlador
             {
                 listadoEspecifico.add(ess);
             }
-            if(listadoEspecifico.size()>=MainActivity.CANTIDADCAGAR)
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
             {
                 break;
             }
@@ -177,7 +173,7 @@ public class Controlador
             {
                 listadoEspecifico.add(ess);
             }
-            if(listadoEspecifico.size()>=MainActivity.CANTIDADCAGAR)
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
             {
                 break;
             }
@@ -195,11 +191,11 @@ public class Controlador
 
         for(Essential ess: listadoPrincipal)
         {
-            if(ess.getStatusActive()==0)
+            if(ess.getStatusActive()==0 && ess.getStatusHang() == 1)
             {
                 listadoEspecifico.add(ess);
             }
-            if(listadoEspecifico.size()>=MainActivity.CANTIDADCAGAR)
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
             {
                 break;
             }
@@ -221,19 +217,19 @@ public class Controlador
             switch (ess.getPointPrincipal())
             {
                 case 0: {
-                    if (Fecha.getHoras(ess.getDate()) > 1 && ess.getStatusActive() == 2) {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.UNODIA && ess.getStatusActive() == 2) {
                         listadoEspecifico.add(ess);
                     }
                 }
                 break;
                 case 1: {
-                    if (Fecha.getHoras(ess.getDate()) > 72 && ess.getStatusActive() == 2) {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.TRESDIAS&& ess.getStatusActive() == 2) {
                         listadoEspecifico.add(ess);
                     }
                 }
                 break;
                 case 2: {
-                    if (Fecha.getHoras(ess.getDate()) > 120 && ess.getStatusActive() == 2) {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCODIAS && ess.getStatusActive() == 2) {
                         listadoEspecifico.add(ess);
                     }
                 }
@@ -244,7 +240,7 @@ public class Controlador
                 case 6:
                 case 7:
                 {
-                    if (Fecha.getHoras(ess.getDate()) > 168 && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.SIETEDIAS && ess.getStatusActive() == 2)
                     {
                         listadoEspecifico.add(ess);
                     }
@@ -254,7 +250,7 @@ public class Controlador
 
                 }
             }
-            if(listadoEspecifico.size()>=MainActivity.CANTIDADCAGAR)
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
             {
                 break;
             }
@@ -278,7 +274,7 @@ public class Controlador
             {
                 listadoEspecifico.add(ess);
             }
-            if(listadoEspecifico.size()>=MainActivity.CANTIDADCAGAR)
+            if(listadoEspecifico.size()>=Const.CANTIDADCARGAR)
             {
                 break;
             }
@@ -300,7 +296,7 @@ public class Controlador
     {
         cuentos = new ArrayList<>();
         List<Termino> lista = new ArrayList<>();
-        cuentos = Data.readFileCuento(activity,cuentoPath);
+        cuentos = Data.readFileCuento(activity,Const.URL_CUENTO);
         for(Termino c: cuentos)
         {
             if(c.getLibro().equals(libro) && c.getUnidad().equals(unidad))

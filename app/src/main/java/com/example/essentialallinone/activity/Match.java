@@ -13,17 +13,17 @@ import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Const;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Match extends AppCompatActivity {
-    private static List<Essential> listado = new ArrayList<>();
-    private static List<Essential> listadoModificado = new ArrayList<>();
-    private static List<Essential> listadoCompleto = new ArrayList<>();
-    private String path = "/sdcard/DB/DB.csv";
-    LinearLayout layoutContenido;
+    private List<Essential> listado = new ArrayList<>();
+    private List<Essential> listadoModificado = new ArrayList<>();
+    private List<Essential> listadoCompleto = new ArrayList<>();
+    private LinearLayout layoutContenido;
     private int orden;
 
     @Override
@@ -169,7 +169,8 @@ public class Match extends AppCompatActivity {
             listadoCompleto.get(ess.getOrder()).setStatusMatch(1);
             listadoCompleto.get(ess.getOrder()).setStatusListen(2);
         }
-        Data.saveFile(listadoCompleto,path,this);
+        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        this.finish();
     }
 
     public String convertSentence(String oracion,String palabra)

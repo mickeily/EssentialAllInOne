@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,8 @@ import java.util.Random;
 
 public class Complete extends AppCompatActivity {
     private  List<Essential> listado = new ArrayList<>();
+    private  List<Essential> listadoCompleto = new ArrayList<>();
+
     private  List<Termino> listaTerminos = new ArrayList<>();
     private  List<Termino> listaTerminosEsenciales = new ArrayList<>();
     private  List<Termino> listaAlteradaTerminos = new ArrayList<>();
@@ -26,6 +31,7 @@ public class Complete extends AppCompatActivity {
 
     private TextView texto;
     private LinearLayout linarLayoutPalabras ;
+    private ScrollView scrollPalabras;
 
     private String mascara="_______";
     private String libro="";
@@ -33,8 +39,6 @@ public class Complete extends AppCompatActivity {
 
     private int objetivo =0;
     private int estatus =0;
-    private int primeraSeleccion=2;
-    private int segundaSeleccion=2;
 
 
     @Override
@@ -42,6 +46,7 @@ public class Complete extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete);
         linarLayoutPalabras = (LinearLayout) findViewById(R.id.palabras);
+        scrollPalabras = (ScrollView)findViewById(R.id.scroll_palabras);
         texto = (TextView) findViewById(R.id.texto);
         cargarEssential();
         setLibroUnidad();
@@ -68,15 +73,16 @@ public class Complete extends AppCompatActivity {
     {
         if(estatus==0)
         {
+            scrollPalabras.setVisibility(View.GONE);
             desplegarListaTerminos(listaTerminos);
         }
         else if(estatus==1|| estatus==2||estatus==3)
         {
+            scrollPalabras.setVisibility(View.VISIBLE);
             setListaTerminosEsenciales();
             setListaAlteradaTerminos();
             desplegarListaTerminosEsenciales();
             desplegarListaTerminos(listaAlteradaTerminos);
-
         }
     }
 
@@ -97,6 +103,7 @@ public class Complete extends AppCompatActivity {
             }
         }
         texto.setText(cadena);
+        texto.setTextSize(16);
     }
 
     private void setListaTerminosEsenciales()
@@ -117,11 +124,11 @@ public class Complete extends AppCompatActivity {
             int cantidadSeleccionada=0;
             if(estatus==2)
             {
-                cantidadSeleccionada = (listaTerminos.size() * primeraSeleccion) / 100;
+                cantidadSeleccionada = (listaTerminos.size() * Const.PRIMERA_PORCIENTO_PALABRAS_SELECCIONAR) / 100;
             }
 
             else if(estatus==3) {
-                cantidadSeleccionada = (listaTerminos.size() * segundaSeleccion) / 100;
+                cantidadSeleccionada = (listaTerminos.size() * Const.SEGUNDA_PORCIENTO_PALABRAS_SELECCIONAR) / 100;
             }
 
             while (listaTerminosEsenciales.size()<cantidadSeleccionada)
@@ -210,7 +217,8 @@ public class Complete extends AppCompatActivity {
         TextView textView;
         textView = (TextView) new TextView(this);
         textView.setText(texto);
-        textView.setPadding(0,16,0,0);
+        textView.setPadding(16,24,0,0);
+        textView.setTextSize(20);
         linarLayoutPalabras.addView(textView);
 
         textView.setOnClickListener(new View.OnClickListener()
@@ -260,7 +268,7 @@ public class Complete extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this,"Finish",Toast.LENGTH_LONG).show();
+            guardar();
         }
     }
 
@@ -276,5 +284,18 @@ public class Complete extends AppCompatActivity {
             }
         }
         return flag;
+    }
+
+    private void guardar()
+    {
+        listadoCompleto = Controlador.getListadoPrincipal(this);
+        for(Essential ess: listado)
+        {
+            listadoCompleto.get(ess.getOrder()).setStatusComplete(1);
+            listadoCompleto.get(ess.getOrder()).setStatusDefinition(2);
+            //listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
+        }
+        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        this.finish();
     }
 }

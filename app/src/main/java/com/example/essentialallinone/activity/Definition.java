@@ -13,6 +13,7 @@ import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Const;
 import com.example.essentialallinone.utility.Reproductor;
 
 import java.util.ArrayList;
@@ -21,14 +22,12 @@ import java.util.List;
 import java.util.Random;
 
 public class Definition extends AppCompatActivity {
-    private static List<Essential> listado = new ArrayList<>();
-    private static List<Essential> listadoCompleto = new ArrayList<>();
+    private List<Essential> listado = new ArrayList<>();
+    private List<Essential> listadoCompleto = new ArrayList<>();
     private List<List<String>> listaAleatoria;
     private List<List<String>> listaOrganizada;
     private ArrayList<String> widgets;
     private int orden =0;
-    private  Essential essential= new Essential();
-    private String path = "/sdcard/DB/DB.csv";
 
     LinearLayout inferior;
     LinearLayout superior;
@@ -228,6 +227,6 @@ public class Definition extends AppCompatActivity {
             listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
             listadoCompleto.get(ess.getOrder()).setStatusExample(2);
         }
-        Data.saveFile(listadoCompleto,path,this);
+        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
     }
 }

@@ -12,35 +12,36 @@ import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Const;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Hanged extends AppCompatActivity {
-    private static List<Essential> listado = new ArrayList<>();
-    private static List<Essential> listadoEnUso = new ArrayList<>();
-    private static List<Essential> listadoCompleto = new ArrayList<>();
+    private  List<Essential> listado = new ArrayList<>();
+    private  List<Essential> listadoEnUso = new ArrayList<>();
+    private  List<Essential> listadoCompleto = new ArrayList<>();
     private int listaNumerica[];
-    private String path = "/sdcard/DB/DB.csv";
     private LinearLayout layoutGenerico;
-    Random aleatorio = new Random();
-    List<View> vistas = new ArrayList<>();
-    Essential enUso= new Essential();
-    List<Character> palabraEnUso;
-    List<String> mascara;
-    String espacio = "  ";
+    private Random aleatorio = new Random();
+    private List<View> vistas = new ArrayList<>();
+    //private Essential enUso= new Essential();
+    private List<Character> palabraEnUso= new ArrayList<>();;
+    private List<String> mascara =new ArrayList<>();
+    private String espacio = "  ";
     private String gion = "_";
-    int contadorPulsaciones=0;
-    TextView textoTextView;
-    int objetivo;
+    private int contadorPulsaciones=0;
+    private TextView textoTextView;
+    private int objetivo=0;
+    private int tablaPosiciones[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hanged);
         cargar();
-        setListaNumerica();
+        inicializarTablaPosiciones();
         seleccionarElemento();
         desplegarRespuesta();
         crearMascara();
@@ -53,57 +54,39 @@ public class Hanged extends AppCompatActivity {
     {
         listado = Controlador.moduloHang(this);
     }
-    private void setListaNumerica()
+
+    //Este metodo crea la tabla de posiciones del tamano de listado de elementos a procesar
+    private void inicializarTablaPosiciones()
     {
-        listaNumerica= new int[listado.size()];
+        tablaPosiciones = new int[listado.size()];
     }
 
-    public void seleccionarElemento()
+
+    private void seleccionarElemento()
     {
-        int contador =0;
-        objetivo = aleatorio.nextInt(listado.size());
-        while (contador<listaNumerica.length)
+        objetivo = aleatorio.nextInt(tablaPosiciones.length);
+        for(int i=0;i<tablaPosiciones.length;i++)
         {
-            if(listaNumerica[contador]<listaNumerica[objetivo])
+            if(tablaPosiciones[i]<tablaPosiciones[objetivo])
             {
-                objetivo= contador;
-                break;
+                objetivo=i;
             }
-            contador++;
         }
-        enUso= listado.get(objetivo);
-
     }
+
     public void desplegarRespuesta()
     {
         TextView oracion = (TextView)findViewById(R.id.text_oracion);
-        oracion.setText(convertSentence(enUso.getMeaning(),enUso.getWord()));
+        oracion.setText(convertSentence(listado.get(objetivo).getMeaning(),listado.get(objetivo).getWord()));
     }
-    public String convertSentence(String oracion,String palabra)
-    {
-        String word ="";
-        String sentence = oracion.toLowerCase();
-        word = sentence.replace(palabra,"______");
-        return word;
-    }
+
     public void crearMascara()
     {
         int contador =0;
-        mascara= new ArrayList<>();
-        while (contador<enUso.getWord().length())
+        mascara.clear();
+        while (contador<listado.get(objetivo).getWord().length())
         {
             mascara.add(gion);
-            contador++;
-        }
-    }
-
-    public void crearPalabraEnUso()
-    {
-        int contador=0;
-        palabraEnUso=new ArrayList<>();
-        while (contador<enUso.getWord().length())
-        {
-            palabraEnUso.add(enUso.getWord().charAt(contador));
             contador++;
         }
     }
@@ -119,8 +102,20 @@ public class Hanged extends AppCompatActivity {
         masc.setText(palabra.toLowerCase());
     }
 
+    private void crearPalabraEnUso()
+    {
+        palabraEnUso.clear();
+        for(int i =0; i<listado.get(objetivo).getWord().length();i++)
+        {
+            palabraEnUso.add(listado.get(objetivo).getWord().charAt(i)) ;
+        }
+        int a =0;
+    }
+
+
     public void evaluar(View view)
     {
+
         vistas.add(view);
         textoTextView = (TextView) view;
         textoTextView.setEnabled(false);
@@ -134,10 +129,7 @@ public class Hanged extends AppCompatActivity {
             }
             contador++;
         }
-        if(!mascara.contains(gion))
-        {
-           actualizar();
-        }
+
         if(!palabraEnUso.contains(textoTextView.getText()))
         {
             contadorPulsaciones++;
@@ -146,46 +138,40 @@ public class Hanged extends AppCompatActivity {
                 reiniciar();
             }
         }
+
+        if(!mascara.contains(gion))
+        {
+            actualizar();
+            reiniciar();
+        }
     }
 
     public void reiniciar()
     {
-        contadorPulsaciones=0;
-        activarVistas();
-        seleccionarElemento();
-        desplegarRespuesta();
-        crearMascara();
-        proyectarMascara();
-        crearPalabraEnUso();
-    }
-
-    public void actualizar()
-    {
-        listaNumerica[objetivo]++;
-        boolean flag = false;
-
-        for(Integer i: listaNumerica)
+        if(comprobarSiFinalizar()==false)
         {
-            if(i<2)
-            {
-                flag = true;
-                break;
-            }
-        }
-        if(flag==true)
-        {
-            reiniciar();
+            contadorPulsaciones=0;
+            activarVistas();
+            seleccionarElemento();
+            desplegarRespuesta();
+            crearMascara();
+            proyectarMascara();
+            crearPalabraEnUso();
         }
         else
         {
             desactivarTeclado();
             guardar();
-            Toast.makeText(this, "Saved file", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,"Finish",Toast.LENGTH_LONG).show();
         }
-
     }
 
-    public void activarVistas()
+    public void actualizar()
+    {
+        tablaPosiciones[objetivo]++;
+    }
+
+    private void activarVistas()
     {
         for(View view: vistas)
         {
@@ -201,9 +187,9 @@ public class Hanged extends AppCompatActivity {
         {
             listadoCompleto.get(ess.getOrder()).setStatusHang(1);
             listadoCompleto.get(ess.getOrder()).setStatusMatch(2);
-            listadoCompleto.get(ess.getOrder()).setStatusComplete(0);
         }
-        Data.saveFile(listadoCompleto,path,this);
+        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        this.finish();
     }
 
     private void desactivarTeclado()
@@ -229,5 +215,26 @@ public class Hanged extends AppCompatActivity {
             layoutGenerico.getChildAt(contador).setEnabled(false);
             contador++;
         }
+    }
+    private String convertSentence(String oracion,String palabra)
+    {
+        String word ="";
+        String sentence = oracion.toLowerCase();
+        word = sentence.replace(palabra,"______");
+        return word;
+    }
+
+    public boolean comprobarSiFinalizar()
+    {
+        boolean flag = true;
+        for(int puntuacion: tablaPosiciones)
+        {
+            if(puntuacion<Const.ROUNDS)
+            {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 }

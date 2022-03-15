@@ -37,7 +37,7 @@
             android:layout_weight="8"
             android:background="#292727"
             android:gravity="center_horizontal|center_vertical"
-            android:onClick="proyectarDefinition"
+            android:onClick="proyectarRespuestas"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Hola"
@@ -50,7 +50,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="#292727"
-            android:onClick="adelantar" />
+            android:onClick="avanzar" />
     </LinearLayout>
 
     <LinearLayout

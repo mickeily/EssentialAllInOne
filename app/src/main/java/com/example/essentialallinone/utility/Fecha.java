@@ -10,7 +10,6 @@ public class Fecha
 {
   private static Calendar calendario1 = Calendar.getInstance();
   private static Calendar calendario2 = Calendar.getInstance();
-  private Calendar calendario3 = Calendar.getInstance();
   private static Date date;
   private static String fehaHoy;
 

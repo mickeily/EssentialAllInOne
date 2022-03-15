@@ -13,9 +13,12 @@ import android.widget.Toast;
 
 import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
+import com.example.essentialallinone.MainActivity;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Const;
 import com.example.essentialallinone.utility.Reproductor;
+import com.example.essentialallinone.utility.Utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,14 +26,20 @@ import java.util.List;
 import java.util.Random;
 
 public class Example extends AppCompatActivity {
+    //Este atributo carga la lista de objeto que se van a procesar en este modulo
     private static List<Essential> listado = new ArrayList<>();
+    //Este atributo carga la base de datos completa
     private static List<Essential> listadoCompleto = new ArrayList<>();
     private List<List<String>> listaAleatoria;
     private List<List<String>> listaOrganizada;
+    //esta lista lleva el control de las veces que un elemento de ha utilizado
+    private int tablaPosiciones[];
+    List<String> listaPalabras;
     private ArrayList<String> widgets;
     private int orden =0;
-    private  Essential essential= new Essential();
-    private String path = "/sdcard/DB/DB.csv";
+    private Random aleatorio = new Random();
+    int objetivo =0;
+    //private  Essential essential= new Essential();
 
     LinearLayout inferior;
     LinearLayout superior;
@@ -46,72 +55,156 @@ public class Example extends AppCompatActivity {
         superior =(LinearLayout) findViewById(R.id.superior);
         inferior =(LinearLayout) findViewById(R.id.inferior);
         cargarData();
-        cargarListaEjemplos();
-        desplegarEx();
+        inicializarTablaPosiciones();
+        seleccionarElemento();
+        descomponerFrase();
+        desplegarTerminos();
+        //cargarListaEjemplos();
+        //desplegarEx();
     }
-
-    public void cargarData()
+    //El metodo cargar carga la informacion correspondiente a este modulo
+    private void cargarData()
     {
-        listado = Controlador.moduloEjemplo(this);
-    }
-
-    public List<String> crearListaNumeros(String s)
-    {
-        Random aleatorio = new Random();
-        int num;
-        List<Integer> numeros = new ArrayList<>();
-        List<String> listaPalabras = new ArrayList<>();
-        String ej[]= s.split(" ");
-        while (numeros.size() < ej.length)
+        int a =0;
+        if(MainActivity.getObjetivo()==0)
         {
-            num = aleatorio.nextInt(ej.length);
-            if(!numeros.contains(num))
+            listado = Controlador.moduloEjemplo(this);
+        }
+        else
+        {
+            listado = Controlador.moduloDefinition(this);
+        }
+
+    }
+
+    //Este metodo crea la tabla de posiciones del tamano de listado de elementos a procesar
+    private void inicializarTablaPosiciones()
+    {
+        tablaPosiciones = new int[listado.size()];
+    }
+
+    // Este metodo selecciona un elemento para se procesado, el cual debe haber aparecido menor o igual
+    // veces que el que tenga menor aparariciones
+    private void seleccionarElemento()
+    {
+        objetivo = aleatorio.nextInt(tablaPosiciones.length);
+        for(int i=0;i<tablaPosiciones.length;i++)
+        {
+            if(tablaPosiciones[i]<tablaPosiciones[objetivo])
             {
-              numeros.add(num);
+                objetivo=i;
             }
         }
-        for(Integer nume: numeros)
-        {
-            listaPalabras.add(ej[nume]);
-        }
-        return  listaPalabras;
     }
 
-    public void cargarListaEjemplos()
+    //Este metodo toma la oracion completa y la descompone en sus diferentes palabras
+    private void descomponerFrase()
     {
-        String ejemplo = "";
-        String frase[];
-        listaAleatoria= new ArrayList<>();
-        listaOrganizada= new ArrayList<>();
-        for(Essential ess: listado)
+        listaPalabras = new ArrayList<>();
+        if(MainActivity.getObjetivo()==0)
         {
-            ejemplo = ess.getExample();
-            listaAleatoria.add(crearListaNumeros(ejemplo));
+            listaPalabras = Arrays.asList(listado.get(objetivo).getExample().split(" "));
         }
-        for(Essential ess: listado)
+        else
         {
-          frase= ess.getExample().split(" ");
-          listaOrganizada.add(Arrays.asList(frase));
+            listaPalabras = Arrays.asList(listado.get(objetivo).getMeaning().split(" "));
         }
+
     }
 
-    public void desplegarEx()
+    //Este metodo toma la lista de palabras y la despliega en forma de TextView en la pantalla,
+    // sorteada de forma aleatoria con las posiciones de una lista
+    private void desplegarTerminos()
     {
-        View v = new View(this);
         reproducir();
-        List<String> lista = listaAleatoria.get(orden);
-        for(String s: lista)
+        List<Integer> listaNumerica =Utility.listaNumerica(listaPalabras.size());
+
+        for(Integer numero:listaNumerica)
         {
-            crearTextViewSuperior(s);
+            crearTextViewSuperior(listaPalabras.get(numero));
         }
     }
+    //Este metodo compara el texto que se organizo con la fuente original para ver sin coinciden
+    public void comprobar(View view)
+    {
+        if(superior.getChildCount()>0)
+        {
+            reproducir();
+        }
+        else
+        {
+            int contador =0;
+            List<String>widgets = new ArrayList<>();
+            boolean flag = false;
+            while (contador< inferior.getChildCount())
+            {
+                v = (TextView) (inferior.getChildAt(contador));
+                widgets.add(v.getText().toString());
+                contador++;
+            }
 
+            for(int i =0; i<widgets.size();i++)
+            {
+                if(!widgets.get(i).equals(listaPalabras.get(i)))
+                {
+                  flag = true;
+                  break;
+                }
+            }
+            if(flag==true)
+            {
+                Toast.makeText(this,"Don't Match",Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                tablaPosiciones[objetivo]++;
+                inferior.removeAllViews();
+                reiniciar();
+            }
+        }
+
+
+
+
+    }
+
+    //Este metodo comprueba si aun queda rondas que ejecutar, de eser asi reincia de nuevo
+    public void reiniciar()
+    {
+        if(comprobarSiFinalizar()==false)
+        {
+            seleccionarElemento();
+            descomponerFrase();
+            desplegarTerminos();
+        }
+        else
+        {
+            guardar();
+        }
+
+    }
+
+    //Este metodo comprueba si ya ha finaliado la cantidad de ejecuciones
+    public boolean comprobarSiFinalizar()
+    {
+        boolean flag = true;
+        for(int puntuacion: tablaPosiciones)
+        {
+            if(puntuacion<Const.ROUNDS)
+            {
+               flag = false;
+               break;
+            }
+        }
+        return flag;
+    }
+    //Este metodo crea una textView en el layaut superior
     public void crearTextViewSuperior(String s)
     {
         textViewSuperior = new TextView(this);
         textViewSuperior.setText(s);
         textViewSuperior.setPadding(16,4,16,4);
-        textViewSuperior.setTextSize(14);
+        textViewSuperior.setTextSize(Const.TAMAGNO_FUENTE);
         superior.addView(textViewSuperior);
 
         textViewSuperior.setOnClickListener(new View.OnClickListener()
@@ -127,13 +220,13 @@ public class Example extends AppCompatActivity {
         });
 
     }
-
+    //Este metodo crea una textView en el layaut inferior
     public void crearTextViewInferior(String s)
     {
         textViewInferior = new TextView(this);
         textViewInferior.setText(s);
         textViewInferior.setPadding(16,4,16,4);
-        textViewInferior.setTextSize(14);
+        textViewInferior.setTextSize(Const.TAMAGNO_FUENTE);
         inferior.addView(textViewInferior);
         textViewInferior.setOnClickListener(new View.OnClickListener()
         {
@@ -149,87 +242,41 @@ public class Example extends AppCompatActivity {
 
     }
 
-    public void comparar(View view)
+    //Este metodo reproduce un audio especifico
+    private void reproducir()
     {
-        if(superior.getChildCount()==0)
+        String palabra = listado.get(objetivo).getWord();
+        if(MainActivity.getObjetivo()==0)
         {
-            widgets = new ArrayList<>();
-            List<String> lista = listaOrganizada.get(orden);
-            int contador =0;
-            boolean flag =false;
-            while (contador< inferior.getChildCount())
+            Reproductor.reproducir(listado.get(objetivo).getWord()+"_E.mp3",this);
+        }
+        else
+        {
+            Reproductor.reproducir(listado.get(objetivo).getWord()+"_D.mp3",this);
+        }
+
+    }
+    //Este metodo registra los cambios en la base de datos
+    private void guardar()
+    {
+            listadoCompleto = Controlador.getListadoPrincipal(this);
+            for(Essential ess: listado)
             {
-                v = (TextView) (inferior.getChildAt(contador));
-                widgets.add(v.getText().toString());
-                contador++;
-            }
-            contador=0;
-            while (contador<widgets.size())
-            {
-                if(widgets.get(contador).equals(lista.get(contador)))
+                if(MainActivity.getObjetivo()==0)
                 {
-                    flag = true;
+                    listadoCompleto.get(ess.getOrder()).setStatusExample(1);
+                    //listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
                 }
                 else
                 {
-                    flag = false;
-                    break;
+                    listadoCompleto.get(ess.getOrder()).setStatusExample(2);
+                    listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
                 }
-                contador ++;
+
             }
-
-            if(flag==false)
-            {
-                Toast.makeText(this, "Don't Match", Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                reniniar();
-            }
+            Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+            this.finish();
         }
-        else
-        {
-            reproducir();
-        }
-    }
-
-    public void reniniar()
-    {
-        if(orden>= listado.size()-1)
-        {
-
-            guardar();
-            Toast.makeText(this, "Saved file", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            orden++;
-            inferior.removeAllViews();
-            superior.removeAllViews();
-            desplegarEx();
-        }
-
-    }
-
-    private void reproducir()
-    {
-        Reproductor.reproducir(listado.get(orden).getWord()+"_E.mp3",this);
-    }
-
-    public void prueba(View v)
-    {
-        reproducir();
-    }
-
-    private void guardar()
-    {
-        listadoCompleto = Controlador.getListadoPrincipal(this);
-        for(Essential ess: listado)
-        {
-            listadoCompleto.get(ess.getOrder()).setStatusExample(1);
-        }
-        Data.saveFile(listadoCompleto,path,this);
-    }
 }
 
 

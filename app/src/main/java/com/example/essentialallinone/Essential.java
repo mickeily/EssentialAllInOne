@@ -21,22 +21,19 @@ public class Essential
     private String book;
     private String unit;
 
-    public Essential()
-    {
-
-    }
+    public Essential() {}
     public Essential(String[] db)
     {
         this.order = Integer.parseInt(db[0]);
         this.statusExample = Integer.parseInt(db[1]);
         this.statusDefinition = Integer.parseInt(db[2]);
-        this.statusMultiChoise = Integer.parseInt(db[3]);
-        this.statusRead = Integer.parseInt(db[4]);
-        this.statusListen = Integer.parseInt(db[5]);
-        this.statusMatch = Integer.parseInt(db[6]);
-        this.statusHang = Integer.parseInt(db[7]);
-        this.statusActive = Integer.parseInt(db[8]);
-        this.statusComplete = Integer.parseInt(db[9]);
+        this.statusComplete = Integer.parseInt(db[3]);
+        this.statusMultiChoise = Integer.parseInt(db[4]);
+        this.statusRead = Integer.parseInt(db[5]);
+        this.statusListen = Integer.parseInt(db[6]);
+        this.statusMatch = Integer.parseInt(db[7]);
+        this.statusHang = Integer.parseInt(db[8]);
+        this.statusActive = Integer.parseInt(db[9]);
         this.pointPrincipal= Integer.parseInt(db[10]);
         this.date = db[11];
         this.example= db[12];
@@ -167,27 +164,27 @@ public class Essential
         return unit;
     }
 
-    private  String toString (Essential ess)
+    public   String toString ()
     {
         String cadena="";
-        cadena = ess.getOrder()+","+
-                ess.getStatusExample()+","+
-                ess.getStatusDefinition()+","+
-                ess.getStatusComplete()+","+
-                ess.getStatusMultiChoise()+","+
-                ess.getStatusRead()+","+
-                ess.getStatusListen()+","+
-                ess.getStatusMatch()+","+
-                ess.getStatusHang()+","+
-                ess.getStatusActive()+","+
-                ess.getPointPrincipal()+","+
-                ess.getDate()+","+
-                ess.getExample()+","+
-                ess.getMeaning()+","+
-                ess.getBook()+","+
-                ess.getUnit()+","+
-                ess.getWord()+","+
-                ess.getType();
+        cadena = getOrder()+","+
+                getStatusExample()+","+
+                getStatusDefinition()+","+
+                getStatusComplete()+","+
+                getStatusMultiChoise()+","+
+                getStatusRead()+","+
+                getStatusListen()+","+
+                getStatusMatch()+","+
+                getStatusHang()+","+
+                getStatusActive()+","+
+                getPointPrincipal()+","+
+                getDate()+","+
+                getExample()+","+
+                getMeaning()+","+
+                getBook()+","+
+                getUnit()+","+
+                getWord()+","+
+                getType();
         return cadena;
     }
 

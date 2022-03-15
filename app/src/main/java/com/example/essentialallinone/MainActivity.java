@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.essentialallinone.activity.Activate;
@@ -21,34 +22,31 @@ import com.example.essentialallinone.utility.Selector;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static int objetivo;
-    public static final int CANTIDADCAGAR = 20;
-    public static final int ROUNDS =5;
-    private static List<Termino> cuentos;
-
+    private static int objetivo=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //prueba();
-        complete();
+        //metodoDirecto();
+        //prueba(new View(this));
+        //complete();
 
     }
-    public void prueba()
+    public void metodoDirecto()
+    {
+        Intent activate = new Intent(this, Activate.class);
+        startActivity(activate);
+    }
+    public void iniciar(View ve)
     {
         objetivo = Selector.examinar(this);
         switch (objetivo)
         {
             case 0:
+            case 9:
             {
                 Intent example = new Intent(this, Example.class);
                 startActivity(example);
-                break;
-            }
-            case 9:
-            {
-                Intent definition = new Intent(this, Definition.class);
-                startActivity(definition);
                 break;
             }
             case 8:
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             case 7:
             {
                 Intent multichoise = new Intent(this, MultiChoise.class);
-                startActivity(listeningAndReading);
+                startActivity(multichoise);
                 break;
             }
             case 5:
@@ -98,18 +96,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public  int getObjetivo()
+    public  static int getObjetivo()
     {
         return objetivo;
     }
 
-    public void complete()
-    {
-        Intent complete = new Intent(this, Complete.class);
-        startActivity(complete);
-        //cuentos = new ArrayList<>();
-        //cuentos = Controlador.cargarCuentos(this);
-        //int a =0;
 
-    }
+
 }

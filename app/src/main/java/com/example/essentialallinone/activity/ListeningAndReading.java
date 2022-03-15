@@ -13,19 +13,25 @@ import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.MainActivity;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
+import com.example.essentialallinone.utility.Const;
 import com.example.essentialallinone.utility.Reproductor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ListeningAndReading extends AppCompatActivity {
-    private static List<Essential> listado = new ArrayList<>();
-    private static List<Essential> listadoCompleto = new ArrayList<>();
+    private  List<Essential> listado = new ArrayList<>();
+    private  List<Essential> listadoCompleto = new ArrayList<>();
     private int orden =0;
-    MainActivity mainActivity =  new MainActivity();
+    private MainActivity mainActivity =  new MainActivity();
+    private int tablaPosiciones[];
     private static int objetivo;
-    TextView center;
-    private String path = "/sdcard/DB/DB.csv";
+    private TextView center;
+    private Random aleatorio = new Random();
+    private int TAMAGNO_FUENTE_PALABRA =42;
+    private int TAMAGNO_FUENTE_RESPUESTA =18;
+    private boolean adelantar= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,52 +40,109 @@ public class ListeningAndReading extends AppCompatActivity {
         center= (TextView)findViewById(R.id.t_center);
         objetivo = mainActivity.getObjetivo();
         cargarData();
-        seleccionar();
+        inicializarTablaPosiciones();
+        seleccionarElemento();
+        proyectarElemento();
 
     }
-
     public void cargarData()
     {
-        listado = Controlador.moduloReadAndListen(this,objetivo);
+        if(objetivo==6)
+        {
+            listado = Controlador.moduloRead(this);
+        }
+        else
+        {
+            listado = Controlador.moduloListen(this);
+        }
     }
-    private void seleccionar()
+    private void inicializarTablaPosiciones()
     {
-        proyectarPalabra(42);
-    }
-    private void proyectarPalabra(int size)
-    {
-        center.setText(listado.get(orden).getWord());
-        center.setTextSize(size);
+        tablaPosiciones = new int[listado.size()];
     }
 
-    public void proyectarDefinition(View view)
+    // Este metodo selecciona un elemento para se procesado, el cual debe haber aparecido menor o igual
+    // veces que el que tenga menor aparariciones
+    private void seleccionarElemento()
     {
-        int a =0;
-        if(objetivo==7)
+        orden = aleatorio.nextInt(tablaPosiciones.length);
+        for(int i=0;i<tablaPosiciones.length;i++)
         {
-            int size =20;
+            if(tablaPosiciones[i]<tablaPosiciones[orden])
+            {
+                orden=i;
+            }
+        }
+    }
+    private  void proyectarElemento()
+    {
+
+        if(objetivo==6)
+        {
+            center.setText(listado.get(orden).getWord());
+            center.setTextSize(TAMAGNO_FUENTE_PALABRA);
+        }
+        else
+        {
+            center.setText(listado.get(orden).getWord());
+            center.setTextSize(TAMAGNO_FUENTE_PALABRA);
+        }
+
+    }
+    public void proyectarRespuestas(View view)
+    {
+        if(adelantar==false)
+        {
+            adelantar=true;
+        }
+        if(objetivo==6)
+        {
             center.setText(listado.get(orden).getMeaning() +"\n\n"+ listado.get(orden).getExample());
-            center.setTextSize(size);
+            center.setTextSize(TAMAGNO_FUENTE_RESPUESTA);
         }
         else
         {
             reproducir();
         }
+    }
+
+    public void avanzar(View view)
+    {
+        if(adelantar==true)
+        {
+            tablaPosiciones[orden]++;
+            reiniciar();
+            adelantar= false;
+        }
 
     }
 
-    public void adelantar(View view)
+    public void reiniciar()
     {
-        if(orden<listado.size()-1)
+        if(comprobarSiFinalizar()==false)
         {
-            orden++;
-            seleccionar();
+            seleccionarElemento();
+            proyectarElemento();
         }
         else
         {
             guardar();
-            Toast.makeText(this, "Saved file", Toast.LENGTH_SHORT).show();
+            this.finish();
         }
+    }
+
+    public boolean comprobarSiFinalizar()
+    {
+        boolean flag = true;
+        for(int puntuacion: tablaPosiciones)
+        {
+            if(puntuacion<Const.ROUNDS)
+            {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 
     public void reproducir()
@@ -111,7 +174,7 @@ public class ListeningAndReading extends AppCompatActivity {
     private void guardar()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
-        if(objetivo==7)
+        if(objetivo==6)
         {
             for(Essential ess: listado)
             {
@@ -128,7 +191,8 @@ public class ListeningAndReading extends AppCompatActivity {
             }
         }
 
-        Data.saveFile(listadoCompleto,path,this);
+        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        this.finish();
     }
 
 

@@ -17,7 +17,9 @@
             android:id="@+id/superior"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"></LinearLayout>
+            android:layout_marginLeft="24sp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" />
     </HorizontalScrollView>
 
     <HorizontalScrollView
@@ -30,6 +32,8 @@
             android:id="@+id/inferior"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="24sp"
+            android:gravity="center_vertical"
             android:orientation="horizontal" />
     </HorizontalScrollView>
 
@@ -44,15 +48,8 @@
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="comparar"
+            android:onClick="comprobar"
             android:text="Enter" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="Button" />
 
     </LinearLayout>
 

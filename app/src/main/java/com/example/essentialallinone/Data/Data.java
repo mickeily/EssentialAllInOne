@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.activity.Termino;
 import com.example.essentialallinone.permission.Permission;
+import com.example.essentialallinone.utility.Const;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,13 +19,11 @@ import java.util.List;
 
 public class Data
 {
-    //private static String databasePath = "/sdcard/DB/DB.csv";
 
-    private  static Essential essential ;
-    private  static Termino cuento ;
-    private  static List<Essential> listado;
+    private static Essential essential ;
+    private static List<Essential> listado;
     private static List<Termino> cuentos;
-    private static String cadena ="";
+
 
     public static List<Essential> readFile(Activity activity,String databasePath)
     {
@@ -60,7 +59,7 @@ public class Data
             String linea = "";
             while ((linea = bf.readLine()) !=null)
             {
-                cuentos.add(new Termino(linea.split(",")));
+                cuentos.add(new Termino(linea.split(Const.SEPARADOR)));
             }
         }catch (Exception e)
         {
@@ -88,31 +87,6 @@ public class Data
             e.printStackTrace();
         }
     }
-
-    private static String concatener(Essential ess)
-    {
-        cadena = ess.getOrder()+","+
-                 ess.getStatusExample()+","+
-                 ess.getStatusDefinition()+","+
-                 ess.getStatusMultiChoise()+","+
-                 ess.getStatusRead()+","+
-                 ess.getStatusListen()+","+
-                 ess.getStatusMatch()+","+
-                 ess.getStatusHang()+","+
-                 ess.getStatusActive()+","+
-                 ess.getStatusComplete()+","+
-                 ess.getPointPrincipal()+","+
-                 ess.getDate()+","+
-                 ess.getExample()+","+
-                 ess.getMeaning()+","+
-                 ess.getBook()+","+
-                 ess.getUnit()+","+
-                 ess.getWord()+","+
-                 ess.getType();
-        return cadena;
-    }
-
-
 }
 
 

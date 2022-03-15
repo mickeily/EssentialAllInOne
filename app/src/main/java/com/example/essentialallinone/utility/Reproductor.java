@@ -12,13 +12,11 @@ import com.example.essentialallinone.permission.Permission;
 public class Reproductor
 {
     private static android.media.MediaPlayer mp;
-    private static final int MY_PERMISSION_REQUEST_READ_EXTERNAL =1;
-    private static String url = "/sdcard/DBAudio/Audio/";
     private  static String path;
 
    static public void reproducir(String word,Activity activity) {
        Permission.checkReadPermission(activity);
-       path = url+word;
+       path = Const.URL_AUDIOS+word;
         try
         {
             if(mp == null)
@@ -60,26 +58,4 @@ public class Reproductor
 
     }
 
-    public void checkPermission(Activity activity)
-    {
-        if(ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
-        {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(activity,Manifest.permission.READ_EXTERNAL_STORAGE))
-            {
-
-            }
-            else
-            {
-                ActivityCompat.requestPermissions(activity,new String[]
-                        {Manifest.permission.READ_EXTERNAL_STORAGE},MY_PERMISSION_REQUEST_READ_EXTERNAL);
-            }
-        }
-
-    }
-
-    public int getDuration()
-    {
-       return mp.getDuration();
-    }
 }
