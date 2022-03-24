@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EssentialAllInOne">
         <activity
+            android:name=".activity.Info"
+            android:exported="false" />
+        <activity
             android:name=".activity.Complete"
             android:exported="false" />
         <activity

@@ -11,14 +11,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="8"
+        android:layout_weight="10"
         android:orientation="horizontal"></LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="24dp"
+        android:paddingEnd="24dp">
+
+        <Button
+            android:id="@+id/button34"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Excercise" />
+
+        <Button
+            android:id="@+id/button33"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_weight="1"
+            android:onClick="estadistic"
+            android:text="Info" />
 
         <Button
             android:id="@+id/button6"
@@ -26,7 +45,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="iniciar"
-            android:text="Button" />
+            android:text="Start" />
     </LinearLayout>
 
 </LinearLayout>

@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="4dp"
         android:layout_weight="1"
-        android:background="#292727"
+        android:background="@android:drawable/btn_default_small"
         android:orientation="horizontal"></LinearLayout>
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#292727" />
+            android:background="@android:drawable/btn_default_small" />
 
         <TextView
             android:id="@+id/t_center"
@@ -35,7 +35,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="8"
-            android:background="#292727"
+            android:background="@android:drawable/btn_default_small"
             android:gravity="center_horizontal|center_vertical"
             android:onClick="proyectarRespuestas"
             android:paddingStart="8dp"
@@ -49,7 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#292727"
+            android:background="@android:drawable/btn_default_small"
             android:onClick="avanzar" />
     </LinearLayout>
 
@@ -58,6 +58,6 @@
         android:layout_height="1dp"
         android:layout_marginTop="4dp"
         android:layout_weight="1"
-        android:background="#292727"
+        android:background="@android:drawable/btn_default_small"
         android:orientation="horizontal"></LinearLayout>
 </LinearLayout>

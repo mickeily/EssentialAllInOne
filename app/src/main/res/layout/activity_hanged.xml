@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_gravity="left"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -48,7 +49,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -66,7 +68,8 @@
                 android:layout_gravity="top"
                 android:layout_weight="1"
                 android:gravity="top"
-                android:paddingStart="24dp" />
+                android:paddingStart="24dp"
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -82,88 +85,118 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:paddingStart="24dp"
+            android:paddingStart="0dp"
             android:paddingEnd="0dp">
 
-            <TextView
-                android:id="@+id/textView9"
+            <Button
+                android:id="@+id/button15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="Q" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="Q"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView10"
+            <Button
+                android:id="@+id/button16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="W" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="W"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView7"
+            <Button
+                android:id="@+id/button13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="E" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="E"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView8"
+            <Button
+                android:id="@+id/button14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="R" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="R"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView5"
+            <Button
+                android:id="@+id/button11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="T" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="T"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView6"
+            <Button
+                android:id="@+id/button12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="Y" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="Y"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView3"
+            <Button
+                android:id="@+id/button9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="U" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="U"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView4"
+            <Button
+                android:id="@+id/button10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="I" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="I"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView2"
+            <Button
+                android:id="@+id/button8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="O" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="O"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView"
+            <Button
+                android:id="@+id/button7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="P" />
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="P"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -174,80 +207,89 @@
             android:layout_marginRight="24dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:paddingStart="32dp">
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp">
 
-            <TextView
-                android:id="@+id/textView19"
+            <Button
+                android:id="@+id/button17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="A" />
+                android:text="A"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView20"
+            <Button
+                android:id="@+id/button18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="S" />
+                android:text="S"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView15"
+            <Button
+                android:id="@+id/button19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="D" />
+                android:text="D"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView16"
+            <Button
+                android:id="@+id/button20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="F" />
+                android:text="F"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView17"
+            <Button
+                android:id="@+id/button21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="G" />
+                android:text="G"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView18"
+            <Button
+                android:id="@+id/button22"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="H" />
+                android:text="H"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView13"
+            <Button
+                android:id="@+id/button23"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="J" />
+                android:text="J"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView14"
+            <Button
+                android:id="@+id/button24"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="K" />
+                android:text="K"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/textView12"
+            <Button
+                android:id="@+id/button25"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
-                android:text="L" />
-
+                android:text="L"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -258,58 +300,59 @@
             android:layout_marginRight="64dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:paddingStart="38dp">
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp">
 
-            <TextView
-                android:id="@+id/textView27"
+            <Button
+                android:id="@+id/button26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
                 android:text="Z" />
 
-            <TextView
-                android:id="@+id/textView28"
+            <Button
+                android:id="@+id/button27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
                 android:text="X" />
 
-            <TextView
-                android:id="@+id/textView25"
+            <Button
+                android:id="@+id/button28"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
                 android:text="C" />
 
-            <TextView
-                android:id="@+id/textView26"
+            <Button
+                android:id="@+id/button29"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
                 android:text="V" />
 
-            <TextView
-                android:id="@+id/textView23"
+            <Button
+                android:id="@+id/button30"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
                 android:text="B" />
 
-            <TextView
-                android:id="@+id/textView24"
+            <Button
+                android:id="@+id/button31"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="evaluar"
                 android:text="N" />
 
-            <TextView
-                android:id="@+id/textView22"
+            <Button
+                android:id="@+id/button32"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

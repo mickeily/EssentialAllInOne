@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.essentialallinone.activity.Activate;
 import com.example.essentialallinone.activity.Cardinal;
 import com.example.essentialallinone.activity.Complete;
+import com.example.essentialallinone.activity.Info;
 import com.example.essentialallinone.activity.Termino;
 import com.example.essentialallinone.activity.Definition;
 import com.example.essentialallinone.activity.Example;
@@ -34,8 +35,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void metodoDirecto()
     {
-        Intent activate = new Intent(this, Activate.class);
-        startActivity(activate);
+        Intent example = new Intent(this, Example.class);
+        startActivity(example);
+    }
+    public void estadistic(View view)
+    {
+        Intent info = new Intent(this, Info.class);
+        startActivity(info);
     }
     public void iniciar(View ve)
     {

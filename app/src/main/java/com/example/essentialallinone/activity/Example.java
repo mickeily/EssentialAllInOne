@@ -41,8 +41,8 @@ public class Example extends AppCompatActivity {
     int objetivo =0;
     //private  Essential essential= new Essential();
 
-    LinearLayout inferior;
-    LinearLayout superior;
+    GridLayout inferior;
+    GridLayout superior;
     TextView textViewInferior;
     TextView textViewSuperior;
     TextView v;
@@ -51,9 +51,9 @@ public class Example extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example);
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        superior =(LinearLayout) findViewById(R.id.superior);
-        inferior =(LinearLayout) findViewById(R.id.inferior);
+        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        superior =(GridLayout) findViewById(R.id.superior);
+        inferior =(GridLayout) findViewById(R.id.inferior);
         cargarData();
         inicializarTablaPosiciones();
         seleccionarElemento();
@@ -158,6 +158,7 @@ public class Example extends AppCompatActivity {
             else
             {
                 tablaPosiciones[objetivo]++;
+
                 inferior.removeAllViews();
                 reiniciar();
             }
@@ -190,7 +191,7 @@ public class Example extends AppCompatActivity {
         boolean flag = true;
         for(int puntuacion: tablaPosiciones)
         {
-            if(puntuacion<Const.ROUNDS)
+            if(puntuacion<2)
             {
                flag = false;
                break;
@@ -203,7 +204,7 @@ public class Example extends AppCompatActivity {
     {
         textViewSuperior = new TextView(this);
         textViewSuperior.setText(s);
-        textViewSuperior.setPadding(16,4,16,4);
+        textViewSuperior.setPadding(16,16,16,4);
         textViewSuperior.setTextSize(Const.TAMAGNO_FUENTE);
         superior.addView(textViewSuperior);
 

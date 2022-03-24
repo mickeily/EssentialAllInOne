@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".activity.Activate">
 
+    <Button
+        android:id="@+id/button36"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF4081" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

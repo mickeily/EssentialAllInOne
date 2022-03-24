@@ -10,30 +10,30 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
-        tools:ignore="SpeakableTextPresentCheck">
+        android:layout_gravity="bottom"
+        android:layout_weight="6">
 
-        <LinearLayout
-            android:id="@+id/superior"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="24sp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" />
+        <GridLayout
+            android:id="@+id/inferior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:columnCount="6"
+            android:orientation="horizontal"/>
     </HorizontalScrollView>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
-        tools:ignore="SpeakableTextPresentCheck">
+        android:layout_gravity="bottom"
+        android:layout_weight="6">
 
-        <LinearLayout
-            android:id="@+id/inferior"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="24sp"
-            android:gravity="center_vertical"
+        <GridLayout
+            android:id="@+id/superior"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:columnCount="6"
             android:orientation="horizontal" />
     </HorizontalScrollView>
 
@@ -47,7 +47,7 @@
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:onClick="comprobar"
             android:text="Enter" />
 

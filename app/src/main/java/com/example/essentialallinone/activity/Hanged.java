@@ -20,13 +20,10 @@ import java.util.Random;
 
 public class Hanged extends AppCompatActivity {
     private  List<Essential> listado = new ArrayList<>();
-    private  List<Essential> listadoEnUso = new ArrayList<>();
     private  List<Essential> listadoCompleto = new ArrayList<>();
-    private int listaNumerica[];
     private LinearLayout layoutGenerico;
     private Random aleatorio = new Random();
     private List<View> vistas = new ArrayList<>();
-    //private Essential enUso= new Essential();
     private List<Character> palabraEnUso= new ArrayList<>();;
     private List<String> mascara =new ArrayList<>();
     private String espacio = "  ";
@@ -35,11 +32,13 @@ public class Hanged extends AppCompatActivity {
     private TextView textoTextView;
     private int objetivo=0;
     private int tablaPosiciones[];
+    private TextView prueba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hanged);
+        prueba= (TextView)findViewById(R.id.porciento);
         cargar();
         inicializarTablaPosiciones();
         seleccionarElemento();
@@ -109,9 +108,7 @@ public class Hanged extends AppCompatActivity {
         {
             palabraEnUso.add(listado.get(objetivo).getWord().charAt(i)) ;
         }
-        int a =0;
     }
-
 
     public void evaluar(View view)
     {
@@ -125,12 +122,13 @@ public class Hanged extends AppCompatActivity {
             if(palabraEnUso.get(contador).toString().equalsIgnoreCase(textoTextView.getText().toString()))
             {
                 mascara.set(contador,textoTextView.getText().toString());
-                proyectarMascara();
+
             }
             contador++;
         }
+        proyectarMascara();
 
-        if(!palabraEnUso.contains(textoTextView.getText()))
+        if(!palabraEnUso.contains(textoTextView.getText().toString().toLowerCase().charAt(0)))
         {
             contadorPulsaciones++;
             if(contadorPulsaciones>=7)
@@ -168,7 +166,14 @@ public class Hanged extends AppCompatActivity {
 
     public void actualizar()
     {
+        String p = "";
         tablaPosiciones[objetivo]++;
+
+        for(int num :tablaPosiciones)
+        {
+           p+=(num+"");
+        }
+        prueba.setText(p);
     }
 
     private void activarVistas()
@@ -229,7 +234,7 @@ public class Hanged extends AppCompatActivity {
         boolean flag = true;
         for(int puntuacion: tablaPosiciones)
         {
-            if(puntuacion<Const.ROUNDS)
+            if(puntuacion<=3)
             {
                 flag = false;
                 break;

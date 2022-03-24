@@ -135,7 +135,7 @@ public class Activate extends AppCompatActivity {
         boolean flag = true;
         for(int puntuacion: tablaPosiciones)
         {
-            if(puntuacion<Const.ROUNDS)
+            if(puntuacion<3)
             {
                 flag = false;
                 break;

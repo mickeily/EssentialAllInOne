@@ -2,6 +2,7 @@ package com.example.essentialallinone.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,7 @@ public class ListeningAndReading extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listening_and_reading);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         center= (TextView)findViewById(R.id.t_center);
         objetivo = mainActivity.getObjetivo();
         cargarData();
@@ -136,7 +138,7 @@ public class ListeningAndReading extends AppCompatActivity {
         boolean flag = true;
         for(int puntuacion: tablaPosiciones)
         {
-            if(puntuacion<Const.ROUNDS)
+            if(puntuacion<1)
             {
                 flag = false;
                 break;
