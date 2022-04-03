@@ -1,18 +1,22 @@
 package com.example.essentialallinone.Data;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.widget.Toast;
 
 import com.example.essentialallinone.Essential;
+import com.example.essentialallinone.R;
 import com.example.essentialallinone.activity.Termino;
 import com.example.essentialallinone.permission.Permission;
 import com.example.essentialallinone.utility.Const;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +29,10 @@ public class Data
     private static List<Termino> cuentos;
 
 
-    public static List<Essential> readFile(Activity activity,String databasePath)
+    public static List<Essential> readFile(Activity activity)
     {
         Permission.checkReadPermission(activity);
+        String databasePath = Const.URL_DATABASE;
 
         String archivoTemp[]= new String[30];
         listado = new ArrayList<>();
@@ -47,6 +52,8 @@ public class Data
         }
         return listado;
     }
+
+
     public static List<Termino> readFileCuento(Activity activity, String cuentoPath)
     {
         Permission.checkReadPermission(activity);

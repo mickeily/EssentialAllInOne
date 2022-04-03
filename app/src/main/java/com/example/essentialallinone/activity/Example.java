@@ -39,12 +39,15 @@ public class Example extends AppCompatActivity {
     private int orden =0;
     private Random aleatorio = new Random();
     int objetivo =0;
+    private  int round =2;
+    private int cantidad=0;
     //private  Essential essential= new Essential();
 
     GridLayout inferior;
     GridLayout superior;
     TextView textViewInferior;
     TextView textViewSuperior;
+    TextView faltante;
     TextView v;
 
     @Override
@@ -54,7 +57,9 @@ public class Example extends AppCompatActivity {
         //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         superior =(GridLayout) findViewById(R.id.superior);
         inferior =(GridLayout) findViewById(R.id.inferior);
+        faltante = (TextView)findViewById(R.id.faltante);
         cargarData();
+        setCantidad();
         inicializarTablaPosiciones();
         seleccionarElemento();
         descomponerFrase();
@@ -75,6 +80,16 @@ public class Example extends AppCompatActivity {
             listado = Controlador.moduloDefinition(this);
         }
 
+    }
+    private void setCantidad()
+    {
+        cantidad = listado.size()*round;
+        desplegarCantidad(cantidad);
+
+    }
+    private void desplegarCantidad(int cantidad)
+    {
+        faltante.setText(cantidad+"");
     }
 
     //Este metodo crea la tabla de posiciones del tamano de listado de elementos a procesar
@@ -157,6 +172,8 @@ public class Example extends AppCompatActivity {
             }
             else
             {
+                cantidad--;
+                desplegarCantidad(cantidad);
                 tablaPosiciones[objetivo]++;
 
                 inferior.removeAllViews();
@@ -191,7 +208,7 @@ public class Example extends AppCompatActivity {
         boolean flag = true;
         for(int puntuacion: tablaPosiciones)
         {
-            if(puntuacion<2)
+            if(puntuacion<round)
             {
                flag = false;
                break;
@@ -278,6 +295,8 @@ public class Example extends AppCompatActivity {
             Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
             this.finish();
         }
+
+
 }
 
 

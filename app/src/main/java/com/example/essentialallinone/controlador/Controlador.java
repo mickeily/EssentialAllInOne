@@ -23,7 +23,7 @@ public class Controlador
 
 
     private static void cargar(Activity activity) {
-        listadoPrincipal = Data.readFile(activity, Const.URL_DATABASE);
+        listadoPrincipal = Data.readFile(activity);
     }
 
     public static List<Essential> moduloEjemplo(Activity activity)

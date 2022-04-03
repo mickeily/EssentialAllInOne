@@ -35,8 +35,9 @@ public class Info extends AppCompatActivity {
         inicializarEstadoTodayMenu();
         setEstadoDeAvance();
         avance();
-        todayMenu();
         setEstadoTodayMenu();
+        todayMenu();
+
     }
 
     private void cargar()
@@ -59,6 +60,15 @@ public class Info extends AppCompatActivity {
         {
             switch (ess.getPointPrincipal())
             {
+                case 0:
+                {
+                    if(ess.getStatusActive()==2)
+                    {
+                        estadoDeAvance[0]++;
+                    }
+
+                    break;
+                }
                 case 1:
                 {
                     estadoDeAvance[1]++;
@@ -111,6 +121,7 @@ public class Info extends AppCompatActivity {
 
     public void setEstadoTodayMenu()
     {
+        int b =0;
         for(Essential ess: listado)
         {
             switch (ess.getPointPrincipal())
@@ -176,13 +187,15 @@ public class Info extends AppCompatActivity {
                 }
             }
         }
+        int a =0;
+
     }
 
 
     public void avance()
     {
         TextView textView;
-        String[] numeros = {"1","2","3","4","5","7","7","P"};
+        String[] numeros = {"0","1","2","3","4","5","6","7","P"};
         for(String num: numeros)
         {
             textView = new TextView(this);
@@ -192,7 +205,7 @@ public class Info extends AppCompatActivity {
 
         }
 
-        for(int i=1;i<estadoDeAvance.length;i++)
+        for(int i=0;i<estadoDeAvance.length;i++)
         {
             textView = new TextView(this);
             textView.setText(estadoDeAvance[i]+"");
@@ -206,7 +219,7 @@ public class Info extends AppCompatActivity {
     public void todayMenu()
     {
         TextView textView;
-        String[] numeros = {"1","2","3","4","5","7","7","P"};
+        String[] numeros = {"1","2","3","4","5","6","7","P"};
         for(String num: numeros)
         {
             textView = new TextView(this);
