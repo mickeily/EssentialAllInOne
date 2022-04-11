@@ -12,6 +12,7 @@
         android:id="@+id/faltante"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:gravity="right"
         android:text="hola mundo" />
 
@@ -19,14 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="bottom"
-        android:layout_weight="6">
+        android:layout_weight="3"
+        android:padding="8dp">
 
         <GridLayout
             android:id="@+id/inferior"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:columnCount="6"
             android:orientation="horizontal" />
     </HorizontalScrollView>
 
@@ -34,31 +35,36 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="bottom"
-        android:layout_weight="6">
+        android:layout_weight="3"
+        android:padding="8dp">
 
         <GridLayout
             android:id="@+id/superior"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:columnCount="6"
             android:orientation="horizontal" />
     </HorizontalScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:gravity="right"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp">
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
             android:onClick="comprobar"
-            android:text="Enter" />
-
+            app:srcCompat="@drawable/forward" />
     </LinearLayout>
 
 </LinearLayout>

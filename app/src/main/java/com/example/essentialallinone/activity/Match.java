@@ -10,10 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.essentialallinone.Data.Data;
+import com.example.essentialallinone.Data.DataManager;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
 import com.example.essentialallinone.utility.Const;
+import com.example.essentialallinone.utility.Fecha;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,7 +163,7 @@ public class Match extends AppCompatActivity {
         }
     }
 
-    private void guardar()
+    private void guardar2()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
@@ -179,5 +181,19 @@ public class Match extends AppCompatActivity {
         String sentence = oracion.toLowerCase();
         word = sentence.replace(palabra,"______");
         return word;
+    }
+
+    private void guardar()
+    {
+
+        for(Essential ess: listado)
+        {
+
+            ess.setStatusMatch(1);
+            ess.setStatusListen(2);
+            ess.setDate(Fecha.getFehaHoy());
+        }
+        DataManager.update(listado,this);
+        this.finish();
     }
 }

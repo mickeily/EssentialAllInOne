@@ -41,7 +41,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Hola"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <TextView

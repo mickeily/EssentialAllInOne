@@ -23,27 +23,29 @@ public class Selector {
     public static int examinar(Activity activity)
     {
         bandera = 0;
-        if (listado.isEmpty() == true) {
-            cargar(activity);
-        }
+        cargar(activity);
+
 
         for (Essential ess : listado)
         {
             examinarPrincipal(ess);
+            long f = Fecha.getHoras(ess.getDate());
             if (bandera == 1) return bandera;
-            else if (ess.getStatusHang() == 1) {
+
+            else if (ess.getStatusHang() == 1)
+            {
                 bandera = 2;
                 return bandera;
-            } else if (ess.getStatusMatch() == 1) {
+            } else if (ess.getStatusMatch() == 1 ) {
                 bandera = 3;
                 return bandera;
-            } else if (ess.getStatusListen() == 1) {
+            } else if (ess.getStatusListen() == 1 ) {
                 bandera = 4;
                 return bandera;
-            } else if (ess.getStatusRead() == 1) {
+            } else if (ess.getStatusRead() == 1 ) {
                 bandera = 5;
                 return bandera;
-            } else if (ess.getStatusMultiChoise() == 1) {
+            } else if (ess.getStatusMultiChoise() == 1 ) {
                 bandera = 6;
                 return bandera;
             } else if (ess.getStatusComplete() == 1) {
@@ -57,6 +59,11 @@ public class Selector {
                 bandera = 9;
                 return bandera;
             }
+            else if (ess.getStatusExample() == 0 ) {
+                bandera = 0;
+                return bandera;
+            }
+
         }
         return bandera;
     }

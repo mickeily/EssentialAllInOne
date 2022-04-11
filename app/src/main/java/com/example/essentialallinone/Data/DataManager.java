@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.essentialallinone.Essential;
 
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class DataManager
 {
-    private SQLiteDatabase db;
+    private  static  SQLiteDatabase db;
 
     public static final String TABLE_ROW_ID = "_id";
     public static final String TABLE_ROW_STATUS_EXAMPLE = "statusExample";
@@ -47,10 +48,10 @@ public class DataManager
         MyCustomSQLiteOpenHelper helper = new MyCustomSQLiteOpenHelper(context);
         db = helper.getWritableDatabase();
     }
-    public void insert(Activity activity)
+    public static void insert(Activity activity)
     {
         List<Essential> lista = new ArrayList<>();
-        lista = Data.readFile(activity);
+        lista = Data.leerArchivo(activity);
         String query="";
         for(Essential ess: lista)
         {
@@ -77,75 +78,91 @@ public class DataManager
                     TABLE_ROW_UNIT + ", "+
 
                     TABLE_ROW_WORD + ", "+
-                    TABLE_ROW_TYPE + ", "+
+                    TABLE_ROW_TYPE + ") "+
 
                     "VALUES (" + ess.getOrder() + ", "+
                     ess.getStatusExample()+ ", "+
                     ess.getStatusDefinition()+ ", "+
                     ess.getStatusMultiChoise()+ ", "+
 
-                    ess.getStatusComplete()+ "'"+ ", "+
+                    ess.getStatusComplete()+ ", "+
                     ess.getStatusRead()+ ", "+
                     ess.getStatusListen()+ ", "+
                     ess.getStatusMatch()+ ", "+
 
                     ess.getStatusHang()+ ", "+
-                    ess.getStatusActive()+ "'"+ ", "+
+                    ess.getStatusActive()+ ", "+
                     ess.getPointPrincipal()+ ", "+
                     "'" +ess.getDate()+ "'"+ ", "+
 
                     "'" +ess.getExample()+ "'"+ ", "+
-                    "'" +ess.getMeaning()+ "'"+ "'"+ ", "+
+                    "'" +ess.getMeaning()+ "'"+ ", "+
                     "'" +ess.getBook()+ "'"+ ", "+
                     "'" +ess.getUnit()+ "'"+ ", "+
 
                     "'" + ess.getWord()+ "'"+ ", "+
-                    "'" + ess.getType()+ "'"+ ", "+
+                    "'" + ess.getType()+ "'"+
                     ");";
             db.execSQL(query);
 
         }
         Log.i("insert()=",query);
     }
-    public Cursor search(Activity activity)
+    public static Cursor search(Activity activity)
     {
-        String query = "SELECT * FROM "+TABLE_NAME_AND_ADDRESS;
-        Cursor c =db.rawQuery(query,null);
-        if(c.getCount()>0)
+        int a =0;
+        try
         {
-            return  c;
-        }
-        else
+            String query = "SELECT * FROM "+TABLE_NAME_AND_ADDRESS;
+            Cursor c =db.rawQuery(query,null);
+            if(c.getCount()>0)
+            {
+                return  c;
+            }
+            else
+            {
+                insert(activity);
+                return c;
+            }
+        }catch (Exception e)
         {
-            insert(activity);
-            return c;
+            Toast.makeText(activity, ""+e, Toast.LENGTH_SHORT).show();
         }
+       return null;
     }
-    public void update(List<Essential> lista)
+    public static void update(List<Essential> lista, Activity activity)
     {
         String query = "";
 
-        for(Essential ess: lista)
+        try
         {
-            query = "UPDATE " + TABLE_NAME_AND_ADDRESS+
-                    " SET " + TABLE_ROW_STATUS_EXAMPLE + " = "+ ess.getStatusExample()+ ", "+
-                    TABLE_ROW_STATUS_DEFINITION + " = "+ ess.getStatusDefinition()+ ", "+
-                    TABLE_ROW_STATUS_MULTICHOISE + " = "+ ess.getStatusMultiChoise()+ ", "+
+            for(Essential ess: lista)
+            {
+                query = "UPDATE " + TABLE_NAME_AND_ADDRESS+
+                        " SET " + TABLE_ROW_STATUS_EXAMPLE + " = "+ ess.getStatusExample()+ ", "+
+                        TABLE_ROW_STATUS_DEFINITION + " = "+ ess.getStatusDefinition()+ ", "+
+                        TABLE_ROW_STATUS_MULTICHOISE + " = "+ ess.getStatusMultiChoise()+ ", "+
 
-                    TABLE_ROW_STATUS_COMPLETE + " = "+ ess.getStatusComplete()+ ", "+
-                    TABLE_ROW_STATUS_READ + " = "+ ess.getStatusRead()+ ", "+
-                    TABLE_ROW_STATUS_LISTEN + " = "+ ess.getStatusListen()+ ", "+
-                    TABLE_ROW_STATUS_MATCH + " = "+ ess.getStatusMatch()+ ", "+
+                        TABLE_ROW_STATUS_COMPLETE + " = "+ ess.getStatusComplete()+ ", "+
+                        TABLE_ROW_STATUS_READ + " = "+ ess.getStatusRead()+ ", "+
+                        TABLE_ROW_STATUS_LISTEN + " = "+ ess.getStatusListen()+ ", "+
+                        TABLE_ROW_STATUS_MATCH + " = "+ ess.getStatusMatch()+ ", "+
 
-                    TABLE_ROW_STATUS_HANG + " = "+ ess.getStatusHang()+ ", "+
-                    TABLE_ROW_STATUS_ACTIVE + " = "+ ess.getStatusActive()+ ", "+
-                    TABLE_ROW_SCORE + " = "+ ess.getPointPrincipal()+ " WHERE " +
-                    TABLE_ROW_ID  + " = " +ess.getOrder()+ "'"+";";
+                        TABLE_ROW_STATUS_HANG + " = "+ ess.getStatusHang()+ ", "+
+                        TABLE_ROW_STATUS_ACTIVE + " = "+ ess.getStatusActive()+ ", "+
+                        TABLE_ROW_DATE + " = "+ "'"+ess.getDate()+"'"+ ", "+
+                        TABLE_ROW_SCORE + " = "+ ess.getPointPrincipal()+ " WHERE " +
+                        TABLE_ROW_ID  + " = " +ess.getOrder()+ ";";
 
 
-            db.execSQL(query);
+                db.execSQL(query);
 
+            }
+        }catch (Exception e)
+        {
+            Toast.makeText(activity, ""+e, Toast.LENGTH_SHORT).show();
         }
+
 
     }
 
@@ -184,7 +201,6 @@ public class DataManager
                     TABLE_ROW_WORD + " TEXT NOT NULL, "+
                     TABLE_ROW_TYPE + " TEXT NOT NULL); ";
             db.execSQL(newTableQuery);
-
         }
 
         @Override

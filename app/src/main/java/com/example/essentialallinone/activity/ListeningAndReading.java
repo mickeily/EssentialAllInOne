@@ -10,11 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.essentialallinone.Data.Data;
+import com.example.essentialallinone.Data.DataManager;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.MainActivity;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
 import com.example.essentialallinone.utility.Const;
+import com.example.essentialallinone.utility.Fecha;
 import com.example.essentialallinone.utility.Reproductor;
 
 import java.util.ArrayList;
@@ -173,7 +175,7 @@ public class ListeningAndReading extends AppCompatActivity {
         }
 
     }
-    private void guardar()
+    private void guardar2()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         if(objetivo==6)
@@ -194,6 +196,34 @@ public class ListeningAndReading extends AppCompatActivity {
         }
 
         Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        this.finish();
+    }
+
+    private void guardar()
+    {
+
+        if(objetivo==6)
+        {
+            for(Essential ess: listado)
+            {
+
+                ess.setStatusRead(1);
+                ess.setStatusMultiChoise(2);
+                ess.setDate(Fecha.getFehaHoy());
+            }
+        }
+        else
+        {
+            for(Essential ess: listado)
+            {
+
+                ess.setStatusListen(1);
+                ess.setStatusRead(2);
+                ess.setDate(Fecha.getFehaHoy());
+            }
+        }
+
+        DataManager.update(listado,this);
         this.finish();
     }
 

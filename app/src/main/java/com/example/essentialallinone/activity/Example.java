@@ -12,11 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.essentialallinone.Data.Data;
+import com.example.essentialallinone.Data.DataManager;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.MainActivity;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
 import com.example.essentialallinone.utility.Const;
+import com.example.essentialallinone.utility.Fecha;
 import com.example.essentialallinone.utility.Reproductor;
 import com.example.essentialallinone.utility.Utility;
 
@@ -54,7 +56,7 @@ public class Example extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example);
-        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         superior =(GridLayout) findViewById(R.id.superior);
         inferior =(GridLayout) findViewById(R.id.inferior);
         faltante = (TextView)findViewById(R.id.faltante);
@@ -275,26 +277,50 @@ public class Example extends AppCompatActivity {
 
     }
     //Este metodo registra los cambios en la base de datos
+
+
+    private void guardar2()
+    {
+        listadoCompleto = Controlador.getListadoPrincipal(this);
+        for(Essential ess: listado)
+        {
+            if(MainActivity.getObjetivo()==0)
+            {
+                listadoCompleto.get(ess.getOrder()).setStatusExample(1);
+                //listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
+            }
+            else
+            {
+                listadoCompleto.get(ess.getOrder()).setStatusExample(2);
+                listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
+            }
+
+        }
+
+        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        this.finish();
+    }
+
     private void guardar()
     {
-            listadoCompleto = Controlador.getListadoPrincipal(this);
-            for(Essential ess: listado)
-            {
-                if(MainActivity.getObjetivo()==0)
-                {
-                    listadoCompleto.get(ess.getOrder()).setStatusExample(1);
-                    //listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
-                }
-                else
-                {
-                    listadoCompleto.get(ess.getOrder()).setStatusExample(2);
-                    listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
-                }
 
+        for(Essential ess: listado)
+        {
+            if(MainActivity.getObjetivo()==0)
+            {
+                ess.setStatusExample(1);
             }
-            Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
-            this.finish();
+            else
+            {
+                ess.setStatusExample(2);
+                ess.setStatusDefinition(1);
+            }
+            ess.setDate(Fecha.getFehaHoy());
+
         }
+        DataManager.update(listado,this);
+        this.finish();
+    }
 
 
 }

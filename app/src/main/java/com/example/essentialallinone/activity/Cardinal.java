@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.essentialallinone.Data.Data;
+import com.example.essentialallinone.Data.DataManager;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
@@ -105,7 +106,7 @@ public class Cardinal extends AppCompatActivity
         orden++;
         reproducir();
     }
-    private void guardar()
+    private void guardar2()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
@@ -119,5 +120,13 @@ public class Cardinal extends AppCompatActivity
         Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
         this.finish();
     }
+
+    private void guardar()
+    {
+        DataManager.update(listado,this);
+        this.finish();
+    }
+
+
 
 }

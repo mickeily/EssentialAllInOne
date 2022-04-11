@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,6 @@ public class Data
         return listado;
     }
 
-
     public static List<Termino> readFileCuento(Activity activity, String cuentoPath)
     {
         Permission.checkReadPermission(activity);
@@ -61,8 +61,10 @@ public class Data
         String archivoTemp[]= new String[200];
         cuentos = new ArrayList<>();
         try{
-            FileReader fileReader = new FileReader(cuentoPath);
-            BufferedReader bf = new BufferedReader(fileReader);
+            Resources resources = activity.getResources();
+            InputStream is = resources.openRawResource(R.raw.cuento);
+            InputStreamReader inputStreamReader = new InputStreamReader(is);
+            BufferedReader bf =  new BufferedReader(inputStreamReader);
             String linea = "";
             while ((linea = bf.readLine()) !=null)
             {
@@ -93,6 +95,32 @@ public class Data
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<Essential> leerArchivo(Activity activity)
+    {
+        String[] cadena;
+        List<Essential> lista =  new ArrayList<>();
+        try {
+            Resources resources = activity.getResources();
+            InputStream is = resources.openRawResource(R.raw.db);
+            InputStreamReader inputStreamReader = new InputStreamReader(is);
+            BufferedReader bf =  new BufferedReader(inputStreamReader);
+            String linea = "";
+
+            while ((linea = bf.readLine()) !=null)
+            {
+                cadena = linea.split(",");
+                lista.add(new Essential(cadena));
+            }
+
+        }catch (Exception e)
+        {
+            Toast.makeText(activity, ""+e, Toast.LENGTH_SHORT).show();
+
+        }
+
+        return lista;
     }
 }
 

@@ -35,8 +35,8 @@ public class MainActivity extends AppCompatActivity {
     }
     public void metodoDirecto()
     {
-        Intent example = new Intent(this, Example.class);
-        startActivity(example);
+        Intent activate = new Intent(this, Activate.class);
+        startActivity(activate);
     }
     public void estadistic(View view)
     {

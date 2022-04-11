@@ -21,6 +21,7 @@ public class Info extends AppCompatActivity {
     private static int[] estadoTodayMenu;
     private GridLayout avance;
     private GridLayout todayMenu;
+    private  TextView texto;
 
 
 
@@ -56,6 +57,7 @@ public class Info extends AppCompatActivity {
 
     public void setEstadoDeAvance()
     {
+
         for(Essential ess: listado)
         {
             switch (ess.getPointPrincipal())
@@ -196,22 +198,28 @@ public class Info extends AppCompatActivity {
     {
         TextView textView;
         String[] numeros = {"0","1","2","3","4","5","6","7","P"};
+
         for(String num: numeros)
         {
             textView = new TextView(this);
             textView.setText(num);
-            textView.setPadding(0,0,56,0);
+            textView.setPadding(0,0,36,0);
             avance.addView(textView);
 
         }
 
+
         for(int i=0;i<estadoDeAvance.length;i++)
         {
+
+            texto = new TextView(this);
             textView = new TextView(this);
             textView.setText(estadoDeAvance[i]+"");
             textView.setPadding(0,24,56,0);
             avance.addView(textView);
         }
+
+
 
 
     }

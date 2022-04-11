@@ -5,7 +5,10 @@ import com.example.essentialallinone.R;
 public  class Const
 {
     public static final int CANTIDADCARGAR = 20;
+    public static final int DIEZ_MINUTOS = 5;
     public static final int CERODIAS =0;
+    public static final int UNA_HORA =1;
+    public static final int DOS_HORAS =2;
     public static final int UNODIA =24;
     public static final int TRESDIAS =72;
     public static final int CINCODIAS =120;

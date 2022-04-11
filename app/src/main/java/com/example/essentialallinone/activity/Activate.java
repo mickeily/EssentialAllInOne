@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.essentialallinone.Data.Data;
+import com.example.essentialallinone.Data.DataManager;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
@@ -41,6 +42,7 @@ public class Activate extends AppCompatActivity {
 
     private void cargar()
     {
+        int a =0;
         listado = Controlador.moduloActive(this);
     }
 
@@ -66,9 +68,6 @@ public class Activate extends AppCompatActivity {
         Reproductor.reproducir(word,this);
 
     }
-
-
-
 
     public void comprobar(View view)
     {
@@ -103,7 +102,7 @@ public class Activate extends AppCompatActivity {
         tablaPosiciones[objetivo]++;
     }
 
-    private void guardar()
+    private void guardar2()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
@@ -142,6 +141,20 @@ public class Activate extends AppCompatActivity {
             }
         }
         return flag;
+    }
+
+    private void guardar()
+    {
+
+        for(Essential ess: listado)
+        {
+
+            ess.setStatusActive(2);
+            ess.setStatusHang(2);
+            ess.setDate(Fecha.getFehaHoy());
+        }
+        DataManager.update(listado,this);
+        this.finish();
     }
 
 

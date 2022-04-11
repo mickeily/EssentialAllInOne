@@ -10,10 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.essentialallinone.Data.Data;
+import com.example.essentialallinone.Data.DataManager;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
 import com.example.essentialallinone.utility.Const;
+import com.example.essentialallinone.utility.Fecha;
 import com.example.essentialallinone.utility.Utility;
 
 import java.util.ArrayList;
@@ -165,7 +167,7 @@ public class MultiChoise extends AppCompatActivity {
         word = sentence.replace(palabra,"______");
         return word;
     }
-    private void guardar()
+    private void guardar2()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
@@ -188,5 +190,19 @@ public class MultiChoise extends AppCompatActivity {
             }
         }
         return flag;
+    }
+
+    private void guardar()
+    {
+
+        for(Essential ess: listado)
+        {
+
+            ess.setStatusMultiChoise(1);
+            ess.setStatusComplete(2);
+            ess.setDate(Fecha.getFehaHoy());
+        }
+        DataManager.update(listado,this);
+        this.finish();
     }
 }

@@ -9,10 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.essentialallinone.Data.Data;
+import com.example.essentialallinone.Data.DataManager;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
 import com.example.essentialallinone.utility.Const;
+import com.example.essentialallinone.utility.Fecha;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -185,7 +187,7 @@ public class Hanged extends AppCompatActivity {
         vistas.clear();
     }
 
-    private void guardar()
+    private void guardar2()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
@@ -241,5 +243,19 @@ public class Hanged extends AppCompatActivity {
             }
         }
         return flag;
+    }
+
+    private void guardar()
+    {
+
+        for(Essential ess: listado)
+        {
+
+            ess.setStatusHang(1);
+            ess.setStatusMatch(2);
+            ess.setDate(Fecha.getFehaHoy());
+        }
+        DataManager.update(listado,this);
+        this.finish();
     }
 }

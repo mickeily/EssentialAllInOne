@@ -1,8 +1,11 @@
 package com.example.essentialallinone.controlador;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.widget.Toast;
 
 import com.example.essentialallinone.Data.Data;
+import com.example.essentialallinone.Data.DataManager;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.MainActivity;
 import com.example.essentialallinone.activity.Termino;
@@ -17,23 +20,29 @@ public class Controlador
 
     private static List<Essential> listadoPrincipal = new ArrayList<>();
     private static List<Essential> listadoEspecifico;
+    private static List<Essential> listadoTemporal;
     private static List<Termino> cuentos;
-    private static MainActivity mainActivity = new MainActivity();
+    private static String[] lista;
+    private static DataManager dataManager;
     private static int orden=0;
 
-
+/*
     private static void cargar(Activity activity) {
         listadoPrincipal = Data.readFile(activity);
+    }
+
+ */
+
+    private static void cargar(Activity activity) {
+        dataManager = new DataManager(activity);
+        Cursor c = DataManager.search(activity);
+        listadoPrincipal = ensamblarEssential(c);
     }
 
     public static List<Essential> moduloEjemplo(Activity activity)
     {
         listadoEspecifico= new ArrayList<>();
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
-
+        cargar(activity);
 
         for(Essential ess: listadoPrincipal)
         {
@@ -51,11 +60,7 @@ public class Controlador
     public static List<Essential> moduloDefinition(Activity activity)
     {
         listadoEspecifico= new ArrayList<>();
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
-
+        cargar(activity);
         for(Essential ess: listadoPrincipal)
         {
             if(ess.getStatusDefinition()==0)
@@ -72,11 +77,7 @@ public class Controlador
     public static List<Essential> moduloMultiChoise(Activity activity)
     {
         listadoEspecifico= new ArrayList<>();
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
-
+        cargar(activity);
         for(Essential ess: listadoPrincipal)
         {
             if(ess.getStatusMultiChoise()==0)
@@ -94,11 +95,7 @@ public class Controlador
     public static List<Essential> moduloRead(Activity activity)
     {
         listadoEspecifico= new ArrayList<>();
-
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
+        cargar(activity);
         for(Essential ess: listadoPrincipal)
         {
             if(ess.getStatusRead()==0)
@@ -118,10 +115,7 @@ public class Controlador
     {
         listadoEspecifico= new ArrayList<>();
 
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
+        cargar(activity);
         for(Essential ess: listadoPrincipal)
         {
             if(ess.getStatusListen()==0)
@@ -140,11 +134,7 @@ public class Controlador
     {
         listadoEspecifico= new ArrayList<>();
 
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
-
+        cargar(activity);
         for(Essential ess: listadoPrincipal)
         {
             if(ess.getStatusMatch()==0)
@@ -161,12 +151,7 @@ public class Controlador
     public static List<Essential> moduloHang(Activity activity)
     {
         listadoEspecifico= new ArrayList<>();
-
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
-
+        cargar(activity);
         for(Essential ess: listadoPrincipal)
         {
             if(ess.getStatusHang()==0)
@@ -184,11 +169,7 @@ public class Controlador
     {
         listadoEspecifico= new ArrayList<>();
 
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
-
+        cargar(activity);
         for(Essential ess: listadoPrincipal)
         {
             if(ess.getStatusActive()==0 && ess.getStatusHang() == 1)
@@ -207,10 +188,7 @@ public class Controlador
     {
         listadoEspecifico= new ArrayList<>();
 
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
+        cargar(activity);
 
         for(Essential ess: listadoPrincipal)
         {
@@ -262,12 +240,7 @@ public class Controlador
     public static List<Essential> moduloComplete(Activity activity)
     {
         listadoEspecifico= new ArrayList<>();
-
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
-
+        cargar(activity);
         for(Essential ess: listadoPrincipal)
         {
             if(ess.getStatusComplete()==0)
@@ -283,11 +256,7 @@ public class Controlador
     }
     public static List<Essential> getListadoPrincipal( Activity activity)
     {
-        if(listadoPrincipal.isEmpty())
-        {
-            cargar(activity);
-        }
-
+        cargar(activity);
         return  listadoPrincipal;
 
     }
@@ -308,6 +277,41 @@ public class Controlador
 
     }
 
+    public static List<Essential> ensamblarEssential(Cursor c)
+    {
+        listadoTemporal = new ArrayList<>();
+        lista = new String[18];
 
+        try{
+            while (c.moveToNext())
+            {
+                lista[0]= c.getString(0);
+                lista[1]= c.getString(1);
+                lista[2]= c.getString(2);
+                lista[3]= c.getString(3);
+                lista[4]= c.getString(4);
+                lista[5]= c.getString(5);
+                lista[6]= c.getString(6);
+                lista[7]= c.getString(7);
+                lista[8]= c.getString(8);
+                lista[9]= c.getString(9);
+                lista[10]= c.getString(10);
+                lista[11]= c.getString(11);
+                lista[12]= c.getString(12);
+                lista[13]= c.getString(13);
+                lista[14]= c.getString(14);
+                lista[15]= c.getString(15);
+                lista[16]= c.getString(16);
+                lista[17]= c.getString(17);
+
+                listadoTemporal.add(new Essential(lista));
+            }
+        } catch (Exception e)
+        {
+
+        }
+        int a =0;
+        return  listadoTemporal;
+    }
 
 }
