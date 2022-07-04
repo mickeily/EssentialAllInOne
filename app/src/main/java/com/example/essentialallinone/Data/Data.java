@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
+import com.example.essentialallinone.activity.PalabraConjugada;
 import com.example.essentialallinone.activity.Termino;
 import com.example.essentialallinone.permission.Permission;
 import com.example.essentialallinone.utility.Const;
@@ -28,11 +29,12 @@ public class Data
     private static Essential essential ;
     private static List<Essential> listado;
     private static List<Termino> cuentos;
+    private static Permission permission = new Permission();
 
 
     public static List<Essential> readFile(Activity activity)
     {
-        Permission.checkReadPermission(activity);
+
         String databasePath = Const.URL_DATABASE;
 
         String archivoTemp[]= new String[30];
@@ -121,6 +123,29 @@ public class Data
         }
 
         return lista;
+    }
+
+    public static List<PalabraConjugada> readFilePalabrasConjugadas(Activity activity)
+    {
+        List<PalabraConjugada> listado = new ArrayList<>();
+        String[] arr;
+
+        try{
+            Resources resources = activity.getResources();
+            InputStream is = resources.openRawResource(R.raw.palabrasconjuganas);
+            InputStreamReader inputStreamReader = new InputStreamReader(is);
+            BufferedReader bf =  new BufferedReader(inputStreamReader);
+            String linea = "";
+            while ((linea = bf.readLine()) !=null)
+            {
+               arr= linea.split(",");
+               listado.add(new PalabraConjugada(arr));
+            }
+        }catch (Exception e)
+        {
+            Toast.makeText(activity,e+"",Toast.LENGTH_LONG).show();
+        }
+        return listado;
     }
 }
 

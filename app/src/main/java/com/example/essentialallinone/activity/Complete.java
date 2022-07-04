@@ -289,19 +289,19 @@ public class Complete extends AppCompatActivity {
         return flag;
     }
 
-    private void guardar2()
+    private void guardar()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
         {
             listadoCompleto.get(ess.getOrder()).setStatusComplete(1);
             listadoCompleto.get(ess.getOrder()).setStatusDefinition(2);
-            //listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
+            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
         }
         Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
         this.finish();
     }
-
+/*
     private void guardar()
     {
 
@@ -315,4 +315,6 @@ public class Complete extends AppCompatActivity {
         DataManager.update(listado,this);
         this.finish();
     }
+
+ */
 }

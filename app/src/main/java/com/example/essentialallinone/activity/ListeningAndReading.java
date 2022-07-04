@@ -175,7 +175,7 @@ public class ListeningAndReading extends AppCompatActivity {
         }
 
     }
-    private void guardar2()
+    private void guardar()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         if(objetivo==6)
@@ -184,6 +184,7 @@ public class ListeningAndReading extends AppCompatActivity {
             {
                 listadoCompleto.get(ess.getOrder()).setStatusRead(1);
                 listadoCompleto.get(ess.getOrder()).setStatusMultiChoise(2);
+                listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
             }
         }
         else
@@ -192,13 +193,14 @@ public class ListeningAndReading extends AppCompatActivity {
             {
                 listadoCompleto.get(ess.getOrder()).setStatusListen(1);
                 listadoCompleto.get(ess.getOrder()).setStatusRead(2);
+                listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
             }
         }
 
         Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
         this.finish();
     }
-
+/*
     private void guardar()
     {
 
@@ -226,6 +228,8 @@ public class ListeningAndReading extends AppCompatActivity {
         DataManager.update(listado,this);
         this.finish();
     }
+
+ */
 
 
 }

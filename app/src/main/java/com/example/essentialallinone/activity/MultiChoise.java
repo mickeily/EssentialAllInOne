@@ -167,13 +167,14 @@ public class MultiChoise extends AppCompatActivity {
         word = sentence.replace(palabra,"______");
         return word;
     }
-    private void guardar2()
+    private void guardar()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
         {
             listadoCompleto.get(ess.getOrder()).setStatusMultiChoise(1);
             listadoCompleto.get(ess.getOrder()).setStatusComplete(2);
+            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
         }
         Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
     }
@@ -191,7 +192,7 @@ public class MultiChoise extends AppCompatActivity {
         }
         return flag;
     }
-
+/*
     private void guardar()
     {
 
@@ -205,4 +206,6 @@ public class MultiChoise extends AppCompatActivity {
         DataManager.update(listado,this);
         this.finish();
     }
+
+ */
 }

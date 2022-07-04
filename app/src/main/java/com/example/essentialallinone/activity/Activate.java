@@ -26,6 +26,7 @@ public class Activate extends AppCompatActivity {
     private static List<Essential> listadoCompleto = new ArrayList<>();
     EditText texto;
     TextView respuesta;
+    TextView preg;
     private int objetivo;
     Random aleatorio = new Random();
     private int tablaPosiciones[];
@@ -35,9 +36,12 @@ public class Activate extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activate);
         respuesta=(TextView)findViewById(R.id.respuesta);
+        preg=(TextView)findViewById(R.id.preg);
         cargar();
         inicializarTablaPosiciones();
         reproducir();
+        showAnswer();
+
     }
 
     private void cargar()
@@ -62,13 +66,13 @@ public class Activate extends AppCompatActivity {
             }
         }
     }
+
     public void reproducir()
     {
         String word= listado.get(objetivo).getWord()+".mp3";
         Reproductor.reproducir(word,this);
 
     }
-
     public void comprobar(View view)
     {
 
@@ -102,7 +106,7 @@ public class Activate extends AppCompatActivity {
         tablaPosiciones[objetivo]++;
     }
 
-    private void guardar2()
+    private void guardar()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
@@ -121,6 +125,7 @@ public class Activate extends AppCompatActivity {
         {
             seleccionarElemento();
             reproducir();
+            showAnswer();
         }
         else
         {
@@ -143,6 +148,12 @@ public class Activate extends AppCompatActivity {
         return flag;
     }
 
+    public void showAnswer()
+    {
+       preg.setText(Hanged.convertSentence(listado.get(objetivo).getMeaning(),listado.get(objetivo).getWord()));
+    }
+
+/*
     private void guardar()
     {
 
@@ -156,6 +167,8 @@ public class Activate extends AppCompatActivity {
         DataManager.update(listado,this);
         this.finish();
     }
+
+ */
 
 
 }

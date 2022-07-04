@@ -3,10 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/borde_redondo.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/raw.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_activate.xml" value="0.1802536231884058" />
-        <entry key="app/src/main/res/layout/activity_cardinal.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/activity_cardinal.xml" value="0.328732747804266" />
         <entry key="app/src/main/res/layout/activity_complete.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_definition.xml" value="0.19972826086956522" />
         <entry key="app/src/main/res/layout/activity_definition2.xml" value="0.20516304347826086" />

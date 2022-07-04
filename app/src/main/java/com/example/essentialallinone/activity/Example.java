@@ -2,7 +2,10 @@ package com.example.essentialallinone.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,12 +22,14 @@ import com.example.essentialallinone.R;
 import com.example.essentialallinone.controlador.Controlador;
 import com.example.essentialallinone.utility.Const;
 import com.example.essentialallinone.utility.Fecha;
+import com.example.essentialallinone.utility.Mapa;
 import com.example.essentialallinone.utility.Reproductor;
 import com.example.essentialallinone.utility.Utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class Example extends AppCompatActivity {
@@ -37,7 +42,9 @@ public class Example extends AppCompatActivity {
     //esta lista lleva el control de las veces que un elemento de ha utilizado
     private int tablaPosiciones[];
     List<String> listaPalabras;
-    private ArrayList<String> widgets;
+
+    private List<PalabraConjugada> palabraConjugadas;
+    private List<String> palabraConjugadasResumen;
     private int orden =0;
     private Random aleatorio = new Random();
     int objetivo =0;
@@ -61,6 +68,9 @@ public class Example extends AppCompatActivity {
         inferior =(GridLayout) findViewById(R.id.inferior);
         faltante = (TextView)findViewById(R.id.faltante);
         cargarData();
+        cargarPalabrasConjugadas();
+        depurarPalabrasConjugada();
+
         setCantidad();
         inicializarTablaPosiciones();
         seleccionarElemento();
@@ -83,6 +93,31 @@ public class Example extends AppCompatActivity {
         }
 
     }
+
+    private void cargarPalabrasConjugadas()
+    {
+
+        palabraConjugadas = new ArrayList<>();
+        palabraConjugadas= Data.readFilePalabrasConjugadas(this);
+
+    }
+    public void depurarPalabrasConjugada()
+    {
+        String libro = "";
+        String unidad = "";
+        libro = listado.get(0).getBook();
+        unidad = listado.get(0).getUnit();
+        palabraConjugadasResumen = new ArrayList<>();
+
+        for(PalabraConjugada pal: palabraConjugadas)
+        {
+            if(pal.getLibro().equalsIgnoreCase(libro) && pal.getUnidad().equalsIgnoreCase(unidad))
+            {
+                palabraConjugadasResumen.add(pal.getTermino());
+            }
+        }
+    }
+
     private void setCantidad()
     {
         cantidad = listado.size()*round;
@@ -221,10 +256,18 @@ public class Example extends AppCompatActivity {
     //Este metodo crea una textView en el layaut superior
     public void crearTextViewSuperior(String s)
     {
+        String pal = "";
         textViewSuperior = new TextView(this);
         textViewSuperior.setText(s);
         textViewSuperior.setPadding(16,16,16,4);
         textViewSuperior.setTextSize(Const.TAMAGNO_FUENTE);
+        if(buscarTermino(s))
+        {
+            textViewSuperior.setTextSize(Const.TAMAGNO_FUENTE+4);
+            textViewSuperior.setTextColor(Color.RED);
+            textViewSuperior.setTypeface(null,Typeface.BOLD);
+        }
+
         superior.addView(textViewSuperior);
 
         textViewSuperior.setOnClickListener(new View.OnClickListener()
@@ -247,6 +290,12 @@ public class Example extends AppCompatActivity {
         textViewInferior.setText(s);
         textViewInferior.setPadding(16,4,16,4);
         textViewInferior.setTextSize(Const.TAMAGNO_FUENTE);
+        if(buscarTermino(s))
+        {
+            textViewInferior.setTextSize(Const.TAMAGNO_FUENTE+4);
+            textViewInferior.setTextColor(Color.RED);
+            textViewInferior.setTypeface(null,Typeface.BOLD);
+        }
         inferior.addView(textViewInferior);
         textViewInferior.setOnClickListener(new View.OnClickListener()
         {
@@ -279,7 +328,7 @@ public class Example extends AppCompatActivity {
     //Este metodo registra los cambios en la base de datos
 
 
-    private void guardar2()
+    private void guardar()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
@@ -295,12 +344,25 @@ public class Example extends AppCompatActivity {
                 listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
             }
 
+            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
+
         }
 
         Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
         this.finish();
     }
 
+    private boolean buscarTermino(String termino)
+    {
+        if(palabraConjugadasResumen.contains(termino.toLowerCase()))
+        {
+           return true ;
+        }
+        else {
+            return false;
+        }
+    }
+/*
     private void guardar()
     {
 
@@ -321,6 +383,9 @@ public class Example extends AppCompatActivity {
         DataManager.update(listado,this);
         this.finish();
     }
+
+ */
+
 
 
 }

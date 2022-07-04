@@ -27,6 +27,7 @@ public class Cardinal extends AppCompatActivity
     private int orden=0;
 
     EditText texto;
+    TextView preg2;
     TextView respuesta;
 
 
@@ -34,14 +35,19 @@ public class Cardinal extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cardinal);
+        preg2 = (TextView)findViewById(R.id.preg2);
         cargar();
         reproducir();
+        showAnswer();
+
+
     }
 
     private void cargar()
     {
-        listado = Controlador.moduloCardinal(this);
         int a =0;
+        listado = Controlador.moduloCardinal(this);
+        int c =0;
     }
 
     public void reproducir()
@@ -77,17 +83,17 @@ public class Cardinal extends AppCompatActivity
     }
 
     private void actualizar(int incremento) {
+        int a =0;
         if (incremento == 1)
         {
             listado.get(orden).setPointPrincipal(listado.get(orden).getPointPrincipal() + 1);
-        } else {
+        }
+        else
+        {
             listado.get(orden).setStatusActive(0);
             listado.get(orden).setStatusHang(1);
+            listado.get(orden).setPointPrincipal(listado.get(orden).getPointPrincipal() / 2);
 
-            if (listado.get(orden).getPointPrincipal() > 0)
-            {
-                listado.get(orden).setStatusComplete(listado.get(orden).getPointPrincipal() + 1);
-            }
         }
         listado.get(orden).setDate(Fecha.getFehaHoy());
 
@@ -105,8 +111,9 @@ public class Cardinal extends AppCompatActivity
     {
         orden++;
         reproducir();
+        showAnswer();
     }
-    private void guardar2()
+    private void guardar()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
@@ -121,11 +128,19 @@ public class Cardinal extends AppCompatActivity
         this.finish();
     }
 
+    private void showAnswer()
+    {
+        preg2.setText(Hanged.convertSentence(listado.get(orden).getMeaning(),listado.get(orden).getWord()));
+    }
+
+
+/*
     private void guardar()
     {
         DataManager.update(listado,this);
         this.finish();
     }
+    */
 
 
 

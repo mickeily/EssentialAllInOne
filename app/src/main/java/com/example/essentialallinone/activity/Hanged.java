@@ -187,13 +187,15 @@ public class Hanged extends AppCompatActivity {
         vistas.clear();
     }
 
-    private void guardar2()
+    private void guardar()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
+
         for(Essential ess: listado)
         {
             listadoCompleto.get(ess.getOrder()).setStatusHang(1);
             listadoCompleto.get(ess.getOrder()).setStatusMatch(2);
+            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
         }
         Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
         this.finish();
@@ -223,7 +225,7 @@ public class Hanged extends AppCompatActivity {
             contador++;
         }
     }
-    private String convertSentence(String oracion,String palabra)
+    public static String convertSentence(String oracion,String palabra)
     {
         String word ="";
         String sentence = oracion.toLowerCase();
@@ -244,7 +246,7 @@ public class Hanged extends AppCompatActivity {
         }
         return flag;
     }
-
+/*
     private void guardar()
     {
 
@@ -258,4 +260,6 @@ public class Hanged extends AppCompatActivity {
         DataManager.update(listado,this);
         this.finish();
     }
+
+ */
 }

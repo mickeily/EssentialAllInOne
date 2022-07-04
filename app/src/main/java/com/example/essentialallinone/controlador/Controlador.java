@@ -26,18 +26,20 @@ public class Controlador
     private static DataManager dataManager;
     private static int orden=0;
 
-/*
-    private static void cargar(Activity activity) {
+
+    private static void cargar(Activity activity)
+    {
         listadoPrincipal = Data.readFile(activity);
     }
 
- */
 
+/*
     private static void cargar(Activity activity) {
         dataManager = new DataManager(activity);
         Cursor c = DataManager.search(activity);
         listadoPrincipal = ensamblarEssential(c);
     }
+    */
 
     public static List<Essential> moduloEjemplo(Activity activity)
     {
@@ -206,19 +208,59 @@ public class Controlador
                     }
                 }
                 break;
-                case 2: {
+                case 2:
+                case 3:
+                case 4:
+                {
                     if (Fecha.getHoras(ess.getDate()) >= Const.CINCODIAS && ess.getStatusActive() == 2) {
                         listadoEspecifico.add(ess);
                     }
                 }
                 break;
-                case 3:
-                case 4:
                 case 5:
                 case 6:
                 case 7:
                 {
                     if (Fecha.getHoras(ess.getDate()) >= Const.SIETEDIAS && ess.getStatusActive() == 2)
+                    {
+                        listadoEspecifico.add(ess);
+                    }
+                }
+                break;
+                case 8:
+                case 9:
+                case 10:
+                {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CATORCEDIAS && ess.getStatusActive() == 2)
+                    {
+                        listadoEspecifico.add(ess);
+                    }
+                }
+                break;
+                case 11:
+                case 12:
+                case 13:
+                {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.VEINTIOCHODIAS && ess.getStatusActive() == 2)
+                    {
+                        listadoEspecifico.add(ess);
+                    }
+                }
+                break;
+                case 14:
+                case 15:
+                case 16:
+                {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCUENTAYSEISDIAS && ess.getStatusActive() == 2)
+                    {
+                        listadoEspecifico.add(ess);
+                    }
+                }
+                break;
+                case 17:
+
+                {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CIENTODOCEDIAS && ess.getStatusActive() == 2)
                     {
                         listadoEspecifico.add(ess);
                     }
@@ -258,7 +300,6 @@ public class Controlador
     {
         cargar(activity);
         return  listadoPrincipal;
-
     }
 
     public static List<Termino> cargarCuentos(Activity activity, String libro, String unidad)

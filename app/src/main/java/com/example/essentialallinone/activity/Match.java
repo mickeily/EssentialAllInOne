@@ -163,14 +163,14 @@ public class Match extends AppCompatActivity {
         }
     }
 
-    private void guardar2()
+    private void guardar()
     {
         listadoCompleto = Controlador.getListadoPrincipal(this);
         for(Essential ess: listado)
         {
             listadoCompleto.get(ess.getOrder()).setStatusMatch(1);
             listadoCompleto.get(ess.getOrder()).setStatusListen(2);
-        }
+            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());        }
         Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
         this.finish();
     }
@@ -182,7 +182,7 @@ public class Match extends AppCompatActivity {
         word = sentence.replace(palabra,"______");
         return word;
     }
-
+/*
     private void guardar()
     {
 
@@ -196,4 +196,6 @@ public class Match extends AppCompatActivity {
         DataManager.update(listado,this);
         this.finish();
     }
+
+ */
 }

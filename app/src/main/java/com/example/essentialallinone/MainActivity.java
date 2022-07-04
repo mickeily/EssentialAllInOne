@@ -1,9 +1,18 @@
 package com.example.essentialallinone;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        takePermission();
         //metodoDirecto();
         //prueba(new View(this));
         //complete();
@@ -37,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Intent activate = new Intent(this, Activate.class);
         startActivity(activate);
+
     }
     public void estadistic(View view)
     {
@@ -99,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(cardinal);
                 break;
             }
+            default:
+            {
+
+            }
         }
     }
 
@@ -106,6 +121,99 @@ public class MainActivity extends AppCompatActivity {
     {
         return objetivo;
     }
+
+    public void takePermissions()
+    {
+        if (isPermissionsGranted())
+        {
+            //Toast.makeText(this,"Permission Already Granted",Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            takePermission();
+
+        }
+    }
+
+    private boolean isPermissionsGranted()
+    {
+        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.R)
+        {
+            return Environment.isExternalStorageManager();
+        }
+        else
+        {
+            int readExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+            return  readExternalStoragePermission== PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    private void takePermission()
+    {
+        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.R)
+        {
+            try {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s",getApplicationContext().getOpPackageName())));
+                startActivityForResult(intent,100);
+            }catch (Exception e)
+            {
+                Intent intent = new Intent();
+                intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent,100);
+            }
+        }else
+        {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},101);
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+        if(requestCode== RESULT_OK)
+        {
+            if(requestCode==100)
+            {
+                if(Build.VERSION.SDK_INT==Build.VERSION_CODES.R)
+                {
+                    if(Environment.isExternalStorageManager())
+                    {
+                        //Toast.makeText(this,"Permission Granted in android 11",Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        takePermission();
+                    }
+                }
+            }
+        }
+    }
+
+    @Override public void onRequestPermissionsResult(int requestCode, @Nullable String[] permission, @Nullable int[] grantedResults)
+    {
+        super.onRequestPermissionsResult(requestCode,permission,grantedResults);
+        if(grantedResults.length>0)
+        {
+            if (requestCode==101)
+            {
+                boolean readExternalStorage = grantedResults[0] == PackageManager.PERMISSION_GRANTED;
+                if(readExternalStorage)
+                {
+                    //Toast.makeText(this,"Read Permission is Granted in android 10 or below",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    takePermission();
+                }
+            }
+
+        }
+
+    }
+
+
 
 
 
