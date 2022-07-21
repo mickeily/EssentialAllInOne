@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Complete extends AppCompatActivity {
-    private  List<Essential> listado = new ArrayList<>();
+    private  List<Contenido> database = new ArrayList<>();
     private  List<Essential> listadoCompleto = new ArrayList<>();
 
     private  List<Termino> listaTerminos = new ArrayList<>();
@@ -60,11 +60,14 @@ public class Complete extends AppCompatActivity {
 
     public void cargarEssential()
     {
-        listado = Controlador.moduloComplete(this);    }
+
+        database = new ArrayList<>();
+        database = Controlador.getFilteredDatabase();
+    }
     public void setLibroUnidad()
     {
-       libro = listado.get(0).getBook();
-       unidad = listado.get(0).getUnit();
+       libro = database.get(0).getBook();
+       unidad = database.get(0).getUnit();
 
     }
     private void setListaTerminos()
@@ -162,9 +165,23 @@ public class Complete extends AppCompatActivity {
         List<Integer> numerica = new ArrayList<>();
         numerica = listaNumerica(listaTerminosEsenciales.size());
 
-        for(Integer num: numerica)
+        for(int i=0; i<listaTerminosEsenciales.size();i++)
         {
-            crearTextView(listaTerminosEsenciales.get(num).getPalabra());
+            for(int j=0; j<listaTerminosEsenciales.size() && i != j;j++)
+            {
+                if(listaTerminosEsenciales.get(i).getPalabra().compareToIgnoreCase(listaTerminosEsenciales.get(j).getPalabra())<0)
+                {
+                    Termino aux = listaTerminosEsenciales.get(i);
+                    listaTerminosEsenciales.set(i,listaTerminosEsenciales.get(j));
+
+                    listaTerminosEsenciales.set(j,aux);
+                }
+            }
+
+        }
+        for(Termino termino: listaTerminosEsenciales)
+        {
+            crearTextView(termino.getPalabra());
         }
 
     }
@@ -291,14 +308,7 @@ public class Complete extends AppCompatActivity {
 
     private void guardar()
     {
-        listadoCompleto = Controlador.getListadoPrincipal(this);
-        for(Essential ess: listado)
-        {
-            listadoCompleto.get(ess.getOrder()).setStatusComplete(1);
-            listadoCompleto.get(ess.getOrder()).setStatusDefinition(2);
-            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
-        }
-        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        Controlador.guardar(this,database,1);
         this.finish();
     }
 /*

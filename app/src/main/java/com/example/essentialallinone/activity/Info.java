@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,8 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Info extends AppCompatActivity {
-    private static List<Essential> listado = new ArrayList<>();
-    private static List<Essential> listadoCortado = new ArrayList<>();
+    private static List<Contenido> listado = new ArrayList<>();
+    private static List<Contenido> listadoCortado = new ArrayList<>();
     private static int[] dias = new int[18];
     private static int[] estadoDeAvance;
     private static long[] tiempoFaltante;
@@ -57,7 +58,7 @@ public class Info extends AppCompatActivity {
 
     private void cargar()
     {
-        listado = Controlador.getListadoPrincipal(this);
+        listado = Controlador.getDatabase(this);
     }
 
     public void inicializarEstadoDeAvance()
@@ -72,13 +73,13 @@ public class Info extends AppCompatActivity {
     public void setEstadoDeAvance()
     {
 
-        for(Essential ess: listado)
+        for(Contenido ess: listado)
         {
             switch (ess.getPointPrincipal())
             {
                 case 0:
                 {
-                    if(ess.getStatusActive()==2)
+                    if(ess.getStatus()==9)
                     {
                         estadoDeAvance[0]++;
                     }
@@ -183,15 +184,14 @@ public class Info extends AppCompatActivity {
 
     public void setEstadoTodayMenu()
     {
-        int b =0;
         int inicio =1;
         tiempoFaltante= new long[18];
-        for(Essential ess: listado)
+        for(Contenido ess: listado)
         {
             switch (ess.getPointPrincipal())
             {
                 case 0: {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.UNODIA && ess.getStatusActive() == 2) {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.UNODIA && ess.getStatus() == 9) {
                         estadoTodayMenu[1]++;
                     }
                     break;
@@ -199,14 +199,14 @@ public class Info extends AppCompatActivity {
 
                 case 1:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.TRESDIAS&& ess.getStatusActive() == 2) {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.TRESDIAS&& ess.getStatus() == 9) {
                         estadoTodayMenu[2]++;
                     }
                     break;
                 }
 
                 case 2: {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCODIAS && ess.getStatusActive() == 2) {
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCODIAS && ess.getStatus() == 9) {
                         estadoTodayMenu[3]++;
                     }
                     break;
@@ -214,7 +214,7 @@ public class Info extends AppCompatActivity {
 
                 case 3:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCODIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCODIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[4]++;
                     }
@@ -223,7 +223,7 @@ public class Info extends AppCompatActivity {
 
                 case 4:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCODIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCODIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[5]++;
                     }
@@ -232,7 +232,7 @@ public class Info extends AppCompatActivity {
 
                 case 5:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.SIETEDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.SIETEDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[6]++;
                     }
@@ -241,7 +241,7 @@ public class Info extends AppCompatActivity {
 
                 case 6:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.SIETEDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.SIETEDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[7]++;
                     }
@@ -250,7 +250,7 @@ public class Info extends AppCompatActivity {
 
                 case 7:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.SIETEDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.SIETEDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[8]++;
                     }
@@ -259,7 +259,7 @@ public class Info extends AppCompatActivity {
 
                 case 8:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CATORCEDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CATORCEDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[9]++;
                     }
@@ -268,7 +268,7 @@ public class Info extends AppCompatActivity {
 
                 case 9:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CATORCEDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CATORCEDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[10]++;
                     }
@@ -277,7 +277,7 @@ public class Info extends AppCompatActivity {
 
                 case 10:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CATORCEDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CATORCEDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[11]++;
                     }
@@ -286,7 +286,7 @@ public class Info extends AppCompatActivity {
 
                 case 11:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.VEINTIOCHODIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.VEINTIOCHODIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[12]++;
                     }
@@ -295,7 +295,7 @@ public class Info extends AppCompatActivity {
 
                 case 12:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.VEINTIOCHODIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.VEINTIOCHODIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[13]++;
                     }
@@ -303,7 +303,7 @@ public class Info extends AppCompatActivity {
                 }
                 case 13:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.VEINTIOCHODIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.VEINTIOCHODIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[14]++;
                     }
@@ -312,7 +312,7 @@ public class Info extends AppCompatActivity {
 
                 case 14:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCUENTAYSEISDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCUENTAYSEISDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[15]++;
                     }
@@ -321,7 +321,7 @@ public class Info extends AppCompatActivity {
 
                 case 15:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCUENTAYSEISDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCUENTAYSEISDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[16]++;
                     }
@@ -330,7 +330,7 @@ public class Info extends AppCompatActivity {
 
                 case 16:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCUENTAYSEISDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CINCUENTAYSEISDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[17]++;
                     }
@@ -339,7 +339,7 @@ public class Info extends AppCompatActivity {
 
                 case 17:
                 {
-                    if (Fecha.getHoras(ess.getDate()) >= Const.CIENTODOCEDIAS && ess.getStatusActive() == 2)
+                    if (Fecha.getHoras(ess.getDate()) >= Const.CIENTODOCEDIAS && ess.getStatus() == 9)
                     {
                         estadoTodayMenu[18]++;
                     }
@@ -351,7 +351,7 @@ public class Info extends AppCompatActivity {
                 }
             }
         }
-        List<Essential> lista = new ArrayList<>();
+        List<Contenido> lista = new ArrayList<>();
         long tiempo=0;
 
         Fecha.FechaInterna fechaInterna= new Fecha.FechaInterna();
@@ -432,43 +432,43 @@ public class Info extends AppCompatActivity {
         String[] posiciones = {"Ex","De","Cp","Mc","Rd","Lt","Mt","Hg","Ac"};
         int[] arreglo = new int[9];
 
-        for(Essential ess: listado)
+        for(Contenido ess: listado)
         {
-            if(ess.getStatusExample()==1)
+            if(ess.getStatus()==1)
             {
                 arreglo[0]++;
             }
-            else if(ess.getStatusDefinition()==1)
+            else if(ess.getStatus()==2)
             {
                 arreglo[1]++;
             }
-            else if(ess.getStatusComplete()==1)
+            else if(ess.getStatus()==3)
             {
                 arreglo[2]++;
             }
 
-            else if(ess.getStatusMultiChoise()==1)
+            else if(ess.getStatus()==4)
             {
                 arreglo[3]++;
             }
-            else if(ess.getStatusRead()==1)
+            else if(ess.getStatus()==5)
             {
                 arreglo[4]++;
             }
-            else if(ess.getStatusListen()==1)
+            else if(ess.getStatus()==6)
             {
                 arreglo[5]++;
             }
 
-            else if(ess.getStatusMatch()==1)
+            else if(ess.getStatus()==7)
             {
                 arreglo[6]++;
             }
-            else if(ess.getStatusHang()==1)
+            else if(ess.getStatus()==8)
             {
                 arreglo[7]++;
             }
-            else if(ess.getStatusActive()==2 && ess.getPointPrincipal()==0)
+            else if(ess.getStatus()==9 && ess.getPointPrincipal()==0)
             {
                 arreglo[8]++;
             }
@@ -479,7 +479,7 @@ public class Info extends AppCompatActivity {
             if(arreglo[i]!=0)
             {
                 textView = new TextView(this);
-                textView.setText(posiciones[i] + "\t\t\t" +arreglo[i]);
+                textView.setText(i + "\t\t\t" +arreglo[i]);
                 textView.setPadding(0,24,0,0);
                 periferico.addView(textView);
             }
@@ -493,9 +493,9 @@ public class Info extends AppCompatActivity {
         int total = 0;
         TextView textView;
         int[] lista = new int[7];
-        for(Essential ess: listado)
+        for(Contenido ess: listado)
         {
-           if(ess.getStatusActive()!=0)
+           if(ess.getStatus()>=9)
            {
                lista[Integer.parseInt(ess.getBook())] ++;
            }
@@ -525,11 +525,11 @@ public class Info extends AppCompatActivity {
 
     }
 
-    public List<Essential> getListadoCortado(int estatus)
+    public List<Contenido> getListadoCortado(int estatus)
     {listadoCortado.clear();
-        for(Essential ess: listado)
+        for(Contenido ess: listado)
         {
-           if(ess.getPointPrincipal()==estatus && ess.getStatusActive() !=0)
+           if(ess.getPointPrincipal()==estatus && ess.getStatus() !=0)
            {
                listadoCortado.add(ess);
            }
@@ -617,15 +617,21 @@ public class Info extends AppCompatActivity {
     private int contarProgreso()
     {
         int acomulador =0;
-        for(Essential ess: listado)
+        for(Contenido ess: listado)
         {
-           if(ess.getStatusActive()!=0)
+           if(ess.getStatus()!=0)
            {
                acomulador++;
            }
         }
         return acomulador;
     }
+    public void showditails(View view)
+    {
+        Intent info = new Intent(this, InfoD.class);
+        startActivity(info);
+    }
+
 
     class Periferica
     {

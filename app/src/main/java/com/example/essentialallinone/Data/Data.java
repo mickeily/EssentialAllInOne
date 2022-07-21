@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.R;
+import com.example.essentialallinone.activity.Contenido;
 import com.example.essentialallinone.activity.PalabraConjugada;
 import com.example.essentialallinone.activity.Termino;
 import com.example.essentialallinone.permission.Permission;
@@ -34,6 +35,8 @@ public class Data
 
     public static List<Essential> readFile(Activity activity)
     {
+        List<String> dbNoStatic= new ArrayList<>(); // este archivo no cambiara ninguno de sus valores
+        List<String> dbStatic= new ArrayList<>();// este sera el archivo que cambiara sus valores
 
         String databasePath = Const.URL_DATABASE;
 
@@ -146,6 +149,92 @@ public class Data
             Toast.makeText(activity,e+"",Toast.LENGTH_LONG).show();
         }
         return listado;
+    }
+
+    public static List<Contenido> createDataBase(Activity activity)
+    {
+        List<Contenido> listaContenido = new ArrayList<>();
+        List<String[]> dbStatic= new ArrayList<>();
+        List<String[]> dbNoStatic= new ArrayList<>();
+        dbStatic = readStaticFile(activity);
+        dbNoStatic = readNoStaticFile(activity);
+
+        for(int i=0; i<dbStatic.size();i++)
+        {
+            listaContenido.add(new Contenido(dbStatic.get(i),dbNoStatic.get(i)));
+        }
+
+        int a =0;
+        return listaContenido;
+    }
+
+    private static List<String[]> readStaticFile(Activity activity)
+    {
+        List<String[]> dbStatic= new ArrayList<>();
+        String archivoTemp[];
+
+        try{
+            Resources resources = activity.getResources();
+            InputStream is = resources.openRawResource(R.raw.bdestatica);
+            InputStreamReader inputStreamReader = new InputStreamReader(is);
+            BufferedReader bf =  new BufferedReader(inputStreamReader);
+            String linea = "";
+            while ((linea = bf.readLine()) !=null)
+            {
+                archivoTemp = linea.split(",");
+                dbStatic.add(archivoTemp);
+            }
+            int a =0;
+        }catch (Exception e)
+        {
+            Toast.makeText(activity,e+"",Toast.LENGTH_LONG).show();
+        }
+        return dbStatic;
+
+
+    }
+
+    private static List<String[]> readNoStaticFile(Activity activity)
+    {
+        List<String[]> dbNoStatic= new ArrayList<>();// este sera el archivo que cambiara sus valores
+        String databasePath = Const.URL_DATABASE;
+        String archivoTemp[];
+
+        try{
+            FileReader fileReader = new FileReader(databasePath);
+            BufferedReader bf = new BufferedReader(fileReader);
+            String linea = "";
+            while ((linea = bf.readLine()) !=null)
+            {
+                archivoTemp = linea.split(",");
+                dbNoStatic.add(archivoTemp);
+            }
+        }catch (Exception e)
+        {
+            Toast.makeText(activity,e+"",Toast.LENGTH_LONG).show();
+        }
+        return dbNoStatic;
+
+    }
+
+    public static void saveDatabase(List<Contenido> lita ,String path, Activity activity)
+    {
+        Permission.checkPermissionWrite(activity);
+        File datos = new File(path);
+        try {
+            datos.createNewFile();
+            FileOutputStream fout = new FileOutputStream(datos);
+            OutputStreamWriter mow = new OutputStreamWriter(fout);
+
+            for(Contenido cont: lita)
+            {
+                mow.append(cont.toString()+"\n");
+            }
+            mow.close();
+            fout.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

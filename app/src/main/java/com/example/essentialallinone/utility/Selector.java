@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.Essential;
 import com.example.essentialallinone.MainActivity;
+import com.example.essentialallinone.activity.Contenido;
 import com.example.essentialallinone.controlador.Controlador;
 
 import java.util.ArrayList;
@@ -15,90 +16,74 @@ import java.util.List;
 public class Selector {
 
     private static List<Essential> listado = new ArrayList<>();
+    private static List<Contenido> listaContenido = new ArrayList<>();
     private static int bandera = 0;
 
     private static void cargar(Activity activity) {
         listado = Controlador.getListadoPrincipal(activity);
     }
 
-    public static int examinar(Activity activity)
-    {
-        bandera = 0;
-        cargar(activity);
-        boolean isFinished= true;
-
-        for(Essential ess: listado)
-        {
-            if(ess.getPointPrincipal()<8)
-            {
-               isFinished = false;
-               break;
-            }
-        }
-
-        if(isFinished==false)
-        {
-            for (Essential ess : listado)
-            {
-                examinarPrincipal(ess);
-                long f = Fecha.getHoras(ess.getDate());
-                if (bandera == 1) return bandera;
-
-                else if (ess.getStatusHang() == 1)
-                {
-                    bandera = 2;
-                    return bandera;
-                } else if (ess.getStatusMatch() == 1 ) {
-                    bandera = 3;
-                    return bandera;
-                } else if (ess.getStatusListen() == 1 ) {
-                    bandera = 4;
-                    return bandera;
-                } else if (ess.getStatusRead() == 1 ) {
-                    bandera = 5;
-                    return bandera;
-                } else if (ess.getStatusMultiChoise() == 1 ) {
-                    bandera = 6;
-                    return bandera;
-                } else if (ess.getStatusComplete() == 1 ) {
-                    bandera = 7;
-                    return bandera;
-                } else if (ess.getStatusDefinition() == 1 ) {
-                    bandera = 8;
-                    return bandera;
-                }
-                else if (ess.getStatusExample() == 1 ) {
-                    bandera = 9;
-                    return bandera;
-                }
-                else if (ess.getStatusExample() == 0 ) {
-                    bandera = 0;
-                    return bandera;
-                }
-
-            }
-        }
-        else
-        {
-            Toast.makeText(activity, "You have finished!!!", Toast.LENGTH_SHORT).show();
-            bandera=-2;
-        }
-
-        return bandera;
+    private static void cargarDB(Activity activity) {
+        listaContenido = Controlador.getDatabase(activity);
     }
-    private static int examinarPrincipal (Essential ess)
+
+    public static int evaluar(Activity activity)
     {
-        switch (ess.getPointPrincipal())
+        int bandera =-1;
+        int contador =0;
+        Contenido cont = new Contenido();
+      cargarDB(activity);
+
+int a =0;
+      while (bandera==-1)
+      {
+          cont = listaContenido.get(contador);
+          switch (cont.getStatus())
+          {
+              case 0:
+              case 1:
+              case 2:
+              case 3:
+              case 4:
+              case 5:
+              case 6:
+              case 7:
+              case 8:
+
+              {
+                  bandera= cont.getStatus();
+                  break;
+              }
+              case 9:
+              {
+                  if(evaluarPrincipal(cont)==1)
+                  {
+                      bandera= cont.getStatus();
+                  }
+                break;
+              }
+
+          }
+          contador++;
+      }
+      return bandera;
+    }
+
+    private static int evaluarPrincipal(Contenido contenido)
+    {
+        int CONTSTANTERETORNO=1;
+        int bandera =-1;
+        switch (contenido.getPointPrincipal())
         {
             case 0: {
-                if (Fecha.getHoras(ess.getDate()) >= Const.UNODIA && ess.getStatusActive() == 2) {
-                    bandera = 1;
+                if (Fecha.getHoras(contenido.getDate()) >= Const.UNODIA) {
+                    bandera = CONTSTANTERETORNO;
                 }
             }
             break;
             case 1: {
-                if (Fecha.getHoras(ess.getDate()) >= Const.TRESDIAS && ess.getStatusActive() == 2) {
-                    bandera = 1;
+                if (Fecha.getHoras(contenido.getDate()) >= Const.TRESDIAS) {
+                    bandera = CONTSTANTERETORNO;
                 }
             }
             break;
@@ -106,8 +91,8 @@ public class Selector {
             case 3:
             case 4:
             {
-                if (Fecha.getHoras(ess.getDate()) >= Const.CINCODIAS && ess.getStatusActive() == 2) {
-                    bandera = 1;
+                if (Fecha.getHoras(contenido.getDate()) >= Const.CINCODIAS) {
+                    bandera = CONTSTANTERETORNO;
                 }
             }
             break;
@@ -116,8 +101,8 @@ public class Selector {
             case 6:
             case 7:
             {
-                if (Fecha.getHoras(ess.getDate()) >= Const.SIETEDIAS && ess.getStatusActive() == 2) {
-                    bandera = 1;
+                if (Fecha.getHoras(contenido.getDate()) >= Const.SIETEDIAS) {
+                    bandera = CONTSTANTERETORNO;
                 }
             }
             break;
@@ -125,8 +110,8 @@ public class Selector {
             case 9:
             case 10:
             {
-                if (Fecha.getHoras(ess.getDate()) >= Const.CATORCEDIAS && ess.getStatusActive() == 2) {
-                    bandera = 1;
+                if (Fecha.getHoras(contenido.getDate()) >= Const.CATORCEDIAS) {
+                    bandera = CONTSTANTERETORNO;
                 }
             }
             break;
@@ -134,8 +119,8 @@ public class Selector {
             case 12:
             case 13:
             {
-                if (Fecha.getHoras(ess.getDate()) >= Const.VEINTIOCHODIAS && ess.getStatusActive() == 2) {
-                    bandera = 1;
+                if (Fecha.getHoras(contenido.getDate()) >= Const.VEINTIOCHODIAS) {
+                    bandera = CONTSTANTERETORNO;
                 }
             }
             break;
@@ -143,22 +128,21 @@ public class Selector {
             case 15:
             case 16:
             {
-                if (Fecha.getHoras(ess.getDate()) >= Const.CINCUENTAYSEISDIAS && ess.getStatusActive() == 2) {
-                    bandera = 1;
+                if (Fecha.getHoras(contenido.getDate()) >= Const.CINCUENTAYSEISDIAS) {
+                    bandera = CONTSTANTERETORNO;
                 }
             }
             break;
             case 17:
             {
-                if (Fecha.getHoras(ess.getDate()) >= Const.CIENTODOCEDIAS && ess.getStatusActive() == 2) {
-                    bandera = 1;
+                if (Fecha.getHoras(contenido.getDate()) >= Const.CIENTODOCEDIAS) {
+                    bandera = CONTSTANTERETORNO;
                 }
             }
             default: {
-                bandera = 0;
+                bandera = -1;
             }
         }
-
         return bandera;
     }
 }

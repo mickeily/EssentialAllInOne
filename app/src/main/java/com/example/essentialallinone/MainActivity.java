@@ -16,6 +16,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.essentialallinone.Data.Data;
 import com.example.essentialallinone.activity.Activate;
 import com.example.essentialallinone.activity.Cardinal;
 import com.example.essentialallinone.activity.Complete;
@@ -27,6 +28,7 @@ import com.example.essentialallinone.activity.Hanged;
 import com.example.essentialallinone.activity.ListeningAndReading;
 import com.example.essentialallinone.activity.Match;
 import com.example.essentialallinone.activity.MultiChoise;
+import com.example.essentialallinone.controlador.Controlador;
 import com.example.essentialallinone.utility.Selector;
 
 import java.util.List;
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         takePermission();
+        //iniciar();
         //metodoDirecto();
         //prueba(new View(this));
         //complete();
@@ -45,76 +48,94 @@ public class MainActivity extends AppCompatActivity {
     }
     public void metodoDirecto()
     {
-        Intent activate = new Intent(this, Activate.class);
-        startActivity(activate);
-
+        Selector.evaluar(this);
     }
     public void estadistic(View view)
     {
         Intent info = new Intent(this, Info.class);
         startActivity(info);
     }
-    public void iniciar(View ve)
+    public void iniciar(View view)
     {
-        objetivo = Selector.examinar(this);
+        int a =0;
+        objetivo = Selector.evaluar(this);
+
+
         switch (objetivo)
         {
             case 0:
-            case 9:
+            case 1:
             {
-                Intent example = new Intent(this, Example.class);
-                startActivity(example);
+                Controlador.setFilteredDataBase(objetivo,this);
+                Intent listeningAndReading = new Intent(this, ListeningAndReading.class);
+                startActivity(listeningAndReading);
                 break;
             }
-            case 8:
+            case 2:
             {
-                Intent complete = new Intent(this, Complete.class);
-                startActivity(complete);
-                break;
-            }
-            case 7:
-            {
+                Controlador.setFilteredDataBase(objetivo,this);
                 Intent multichoise = new Intent(this, MultiChoise.class);
                 startActivity(multichoise);
+                break;
+            }
+            case 3:
+            {
+                Controlador.setFilteredDataBase(objetivo,this);
+                Intent match = new Intent(this, Match.class);
+                startActivity(match);
+                break;
+            }
+
+            case 4:
+            {
+                Controlador.setFilteredDataBase(objetivo,this);
+                Intent complete = new Intent(this, Complete.class);
+                startActivity(complete);
                 break;
             }
             case 5:
             case 6:
             {
-                Intent listeningAndReading = new Intent(this, ListeningAndReading.class);
-                startActivity(listeningAndReading);
+                Controlador.setFilteredDataBase(objetivo,this);
+                Intent example = new Intent(this, Example.class);
+                startActivity(example);
                 break;
             }
-            case 4:
+
+            case 7:
             {
-                Intent match = new Intent(this, Match.class);
-                startActivity(match);
-                break;
-            }
-            case 3:
-            {
+                Controlador.setFilteredDataBase(objetivo,this);
                 Intent hanged = new Intent(this, Hanged.class);
                 startActivity(hanged);
                 break;
             }
 
-            case 2:
+            case 8:
             {
+                Controlador.setFilteredDataBase(objetivo,this);
                 Intent activate = new Intent(this, Activate.class);
                 startActivity(activate);
                 break;
             }
-            case 1:
+            case 9:
             {
+                Controlador.setFilteredDataBase(objetivo,this);
                 Intent cardinal = new Intent(this, Cardinal.class);
                 startActivity(cardinal);
                 break;
             }
             default:
             {
-
+                break;
             }
         }
+
+    }
+
+    public void irAEjercicio(View view)
+    {
+        Intent ejercicios = new Intent(this, Ejercicios.class);
+        startActivity(ejercicios);
     }
 
     public  static int getObjetivo()
@@ -212,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
 
 
 

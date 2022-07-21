@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Hanged extends AppCompatActivity {
-    private  List<Essential> listado = new ArrayList<>();
+    private  List<Contenido> database;
     private  List<Essential> listadoCompleto = new ArrayList<>();
     private LinearLayout layoutGenerico;
     private Random aleatorio = new Random();
@@ -53,13 +53,14 @@ public class Hanged extends AppCompatActivity {
 
     private void cargar()
     {
-        listado = Controlador.moduloHang(this);
+        database = new ArrayList<>();
+        database = Controlador.getFilteredDatabase();
     }
 
     //Este metodo crea la tabla de posiciones del tamano de listado de elementos a procesar
     private void inicializarTablaPosiciones()
     {
-        tablaPosiciones = new int[listado.size()];
+        tablaPosiciones = new int[database.size()];
     }
 
 
@@ -78,14 +79,14 @@ public class Hanged extends AppCompatActivity {
     public void desplegarRespuesta()
     {
         TextView oracion = (TextView)findViewById(R.id.text_oracion);
-        oracion.setText(convertSentence(listado.get(objetivo).getMeaning(),listado.get(objetivo).getWord()));
+        oracion.setText(convertSentence(database.get(objetivo).getMeaning(),database.get(objetivo).getWord()));
     }
 
     public void crearMascara()
     {
         int contador =0;
         mascara.clear();
-        while (contador<listado.get(objetivo).getWord().length())
+        while (contador<database.get(objetivo).getWord().length())
         {
             mascara.add(gion);
             contador++;
@@ -106,9 +107,9 @@ public class Hanged extends AppCompatActivity {
     private void crearPalabraEnUso()
     {
         palabraEnUso.clear();
-        for(int i =0; i<listado.get(objetivo).getWord().length();i++)
+        for(int i =0; i<database.get(objetivo).getWord().length();i++)
         {
-            palabraEnUso.add(listado.get(objetivo).getWord().charAt(i)) ;
+            palabraEnUso.add(database.get(objetivo).getWord().charAt(i)) ;
         }
     }
 
@@ -189,15 +190,7 @@ public class Hanged extends AppCompatActivity {
 
     private void guardar()
     {
-        listadoCompleto = Controlador.getListadoPrincipal(this);
-
-        for(Essential ess: listado)
-        {
-            listadoCompleto.get(ess.getOrder()).setStatusHang(1);
-            listadoCompleto.get(ess.getOrder()).setStatusMatch(2);
-            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
-        }
-        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        Controlador.guardar(this,database,1);
         this.finish();
     }
 

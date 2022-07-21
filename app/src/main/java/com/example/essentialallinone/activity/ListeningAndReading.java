@@ -24,124 +24,123 @@ import java.util.List;
 import java.util.Random;
 
 public class ListeningAndReading extends AppCompatActivity {
-    private  List<Essential> listado = new ArrayList<>();
-    private  List<Essential> listadoCompleto = new ArrayList<>();
-    private int orden =0;
-    private MainActivity mainActivity =  new MainActivity();
+    private List<Contenido> database;
+    private List<Contenido> listadoCompleto;
+    private int orden = 0;
+    private int caraCruz = 0;
+    private int avance=0;
+    int round = 4;
+    private MainActivity mainActivity = new MainActivity();
     private int tablaPosiciones[];
     private static int objetivo;
     private TextView center;
     private Random aleatorio = new Random();
-    private int TAMAGNO_FUENTE_PALABRA =42;
-    private int TAMAGNO_FUENTE_RESPUESTA =18;
-    private boolean adelantar= false;
+    private int TAMAGNO_FUENTE_PALABRA = 42;
+    private int TAMAGNO_FUENTE_RESPUESTA = 18;
+    private boolean adelantar = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listening_and_reading);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        center= (TextView)findViewById(R.id.t_center);
+        center = (TextView) findViewById(R.id.t_center);
         objetivo = mainActivity.getObjetivo();
+
         cargarData();
         inicializarTablaPosiciones();
         seleccionarElemento();
         proyectarElemento();
 
     }
-    public void cargarData()
-    {
-        if(objetivo==6)
-        {
-            listado = Controlador.moduloRead(this);
-        }
-        else
-        {
-            listado = Controlador.moduloListen(this);
-        }
+
+    public void cargarData() {
+        database = new ArrayList<>();
+        database = Controlador.getFilteredDatabase();
     }
-    private void inicializarTablaPosiciones()
-    {
-        tablaPosiciones = new int[listado.size()];
+
+    private void inicializarTablaPosiciones() {
+        tablaPosiciones = new int[database.size()];
     }
 
     // Este metodo selecciona un elemento para se procesado, el cual debe haber aparecido menor o igual
     // veces que el que tenga menor aparariciones
-    private void seleccionarElemento()
-    {
+    private void seleccionarElemento() {
         orden = aleatorio.nextInt(tablaPosiciones.length);
-        for(int i=0;i<tablaPosiciones.length;i++)
-        {
-            if(tablaPosiciones[i]<tablaPosiciones[orden])
-            {
-                orden=i;
+        for (int i = 0; i < tablaPosiciones.length; i++) {
+            if (tablaPosiciones[i] < tablaPosiciones[orden]) {
+                orden = i;
             }
         }
     }
-    private  void proyectarElemento()
-    {
 
-        if(objetivo==6)
+    private void proyectarElemento() {
+
+        if (objetivo == 0)
         {
-            center.setText(listado.get(orden).getWord());
-            center.setTextSize(TAMAGNO_FUENTE_PALABRA);
-        }
-        else
+            if(avance<=round/2)
+            {
+                center.setText(database.get(orden).getWord());
+                center.setTextSize(TAMAGNO_FUENTE_PALABRA);
+            }
+            else
+            {
+                center.setText(convertSentence(database.get(orden).getMeaning(),database.get(orden).getWord()));
+                center.setTextSize(TAMAGNO_FUENTE_RESPUESTA);
+            }
+
+        } else
         {
-            center.setText(listado.get(orden).getWord());
+            center.setText(database.get(orden).getWord());
             center.setTextSize(TAMAGNO_FUENTE_PALABRA);
         }
 
     }
-    public void proyectarRespuestas(View view)
-    {
-        if(adelantar==false)
-        {
-            adelantar=true;
+
+    public void proyectarRespuestas(View view) {
+        if (adelantar == false) {
+            adelantar = true;
         }
-        if(objetivo==6)
-        {
-            center.setText(listado.get(orden).getMeaning() +"\n\n"+ listado.get(orden).getExample());
-            center.setTextSize(TAMAGNO_FUENTE_RESPUESTA);
-        }
-        else
-        {
+        if (objetivo == 0) {
+            if (avance <= round/2) {
+
+                center.setText(database.get(orden).getMeaning() + "\n\n" + database.get(orden).getExample());
+                center.setTextSize(TAMAGNO_FUENTE_RESPUESTA);
+            } else {
+                center.setText(database.get(orden).getWord());
+                center.setTextSize(TAMAGNO_FUENTE_PALABRA);
+            }
+        } else {
             reproducir();
         }
     }
 
-    public void avanzar(View view)
-    {
-        if(adelantar==true)
-        {
+    public void avanzar(View view) {
+        if (adelantar == true) {
             tablaPosiciones[orden]++;
             reiniciar();
-            adelantar= false;
+            adelantar = false;
         }
 
     }
 
-    public void reiniciar()
-    {
-        if(comprobarSiFinalizar()==false)
-        {
+    public void reiniciar() {
+        if (comprobarSiFinalizar() == false) {
             seleccionarElemento();
+            setAvance();
             proyectarElemento();
-        }
-        else
-        {
+        } else {
             guardar();
             this.finish();
         }
     }
 
-    public boolean comprobarSiFinalizar()
-    {
+    public boolean comprobarSiFinalizar() {
         boolean flag = true;
-        for(int puntuacion: tablaPosiciones)
-        {
-            if(puntuacion<1)
-            {
+        if(MainActivity.getObjetivo()==1) round=2;
+
+        for (int puntuacion : tablaPosiciones) {
+            if (puntuacion < round) {
                 flag = false;
                 break;
             }
@@ -149,25 +148,25 @@ public class ListeningAndReading extends AppCompatActivity {
         return flag;
     }
 
-    public void reproducir()
-    {
-        String word= listado.get(orden).getWord()+".mp3";
-        String wordD= listado.get(orden).getWord()+"_D.mp3";
-        String wordE= listado.get(orden).getWord()+"_E.mp3";
+    public void reproducir() {
 
-        Reproductor.reproducir(word,this);
+        String word = database.get(orden).getWord() + ".mp3";
+        String wordD = database.get(orden).getWord() + "_D.mp3";
+        String wordE = database.get(orden).getWord() + "_E.mp3";
+
+        Reproductor.reproducir(word, this);
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Reproductor.reproducir(wordD,this);
+        Reproductor.reproducir(wordD, this);
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Reproductor.reproducir(wordE,this);
+        Reproductor.reproducir(wordE, this);
         try {
             Thread.sleep(0);
         } catch (InterruptedException e) {
@@ -175,31 +174,33 @@ public class ListeningAndReading extends AppCompatActivity {
         }
 
     }
-    private void guardar()
-    {
-        listadoCompleto = Controlador.getListadoPrincipal(this);
-        if(objetivo==6)
-        {
-            for(Essential ess: listado)
-            {
-                listadoCompleto.get(ess.getOrder()).setStatusRead(1);
-                listadoCompleto.get(ess.getOrder()).setStatusMultiChoise(2);
-                listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
-            }
-        }
-        else
-        {
-            for(Essential ess: listado)
-            {
-                listadoCompleto.get(ess.getOrder()).setStatusListen(1);
-                listadoCompleto.get(ess.getOrder()).setStatusRead(2);
-                listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
-            }
-        }
 
-        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+    private void guardar() {
+        Controlador.guardar(this, database, 1);
         this.finish();
     }
+
+
+    public String convertSentence(String oracion, String palabra) {
+        String word = "";
+        String sentence = oracion.toLowerCase();
+        word = sentence.replace(palabra, "______");
+        return word;
+    }
+
+    public void setAvance()
+    {
+        int pocision =0;
+        for(int i = 0; i<tablaPosiciones.length;i++)
+        {
+          if(tablaPosiciones[i]>pocision)
+          {
+              pocision = tablaPosiciones[i];
+          }
+        }
+        avance=pocision;
+    }
+}
 /*
     private void guardar()
     {
@@ -232,4 +233,3 @@ public class ListeningAndReading extends AppCompatActivity {
  */
 
 
-}

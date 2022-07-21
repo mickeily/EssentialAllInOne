@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:gravity="right"
+        android:gravity="start|right"
         android:orientation="horizontal"
         android:paddingLeft="8dp"
         android:paddingTop="8dp"

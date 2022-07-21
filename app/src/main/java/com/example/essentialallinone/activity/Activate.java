@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Activate extends AppCompatActivity {
-    private static List<Essential> listado = new ArrayList<>();
+    private static List<Contenido> database;
     private static List<Essential> listadoCompleto = new ArrayList<>();
     EditText texto;
     TextView respuesta;
@@ -46,13 +46,13 @@ public class Activate extends AppCompatActivity {
 
     private void cargar()
     {
-        int a =0;
-        listado = Controlador.moduloActive(this);
+        database = new ArrayList<>();
+        database = Controlador.getFilteredDatabase();
     }
 
     private void inicializarTablaPosiciones()
     {
-        tablaPosiciones = new int[listado.size()];
+        tablaPosiciones = new int[database.size()];
     }
 
     private void seleccionarElemento()
@@ -69,7 +69,7 @@ public class Activate extends AppCompatActivity {
 
     public void reproducir()
     {
-        String word= listado.get(objetivo).getWord()+".mp3";
+        String word= database.get(objetivo).getWord()+".mp3";
         Reproductor.reproducir(word,this);
 
     }
@@ -84,7 +84,7 @@ public class Activate extends AppCompatActivity {
        }
        else
        {
-           if(texto.getText().toString().equalsIgnoreCase(listado.get(objetivo).getWord()))
+           if(texto.getText().toString().equalsIgnoreCase(database.get(objetivo).getWord()))
            {
                texto.setText("");
                respuesta.setText("");
@@ -94,7 +94,7 @@ public class Activate extends AppCompatActivity {
            else
            {
                texto.setText("");
-               respuesta.setText(listado.get(objetivo).getWord());
+               respuesta.setText(database.get(objetivo).getWord());
                reiniciar();
 
            }
@@ -108,14 +108,7 @@ public class Activate extends AppCompatActivity {
 
     private void guardar()
     {
-        listadoCompleto = Controlador.getListadoPrincipal(this);
-        for(Essential ess: listado)
-        {
-            listadoCompleto.get(ess.getOrder()).setStatusActive(2);
-            listadoCompleto.get(ess.getOrder()).setStatusHang(2);
-            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
-        }
-        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        Controlador.guardar(this,database,1);
         this.finish();
     }
 
@@ -139,7 +132,7 @@ public class Activate extends AppCompatActivity {
         boolean flag = true;
         for(int puntuacion: tablaPosiciones)
         {
-            if(puntuacion<3)
+            if(puntuacion<4)
             {
                 flag = false;
                 break;
@@ -150,7 +143,7 @@ public class Activate extends AppCompatActivity {
 
     public void showAnswer()
     {
-       preg.setText(Hanged.convertSentence(listado.get(objetivo).getMeaning(),listado.get(objetivo).getWord()));
+       preg.setText(Hanged.convertSentence(database.get(objetivo).getMeaning(),database.get(objetivo).getWord()));
     }
 
 /*

@@ -21,7 +21,7 @@ import java.util.List;
 
 public class Cardinal extends AppCompatActivity
 {
-    private static List<Essential> listado = new ArrayList<>();
+    private  List<Contenido> database;
     private static List<Essential> listadoEnUso = new ArrayList<>();
     private static List<Essential> listadoCompleto = new ArrayList<>();
     private int orden=0;
@@ -45,14 +45,14 @@ public class Cardinal extends AppCompatActivity
 
     private void cargar()
     {
-        int a =0;
-        listado = Controlador.moduloCardinal(this);
-        int c =0;
+
+        database = new ArrayList<>();
+        database = Controlador.getFilteredDatabase();
     }
 
     public void reproducir()
     {
-        String word= listado.get(orden).getWord()+".mp3";
+        String word= database.get(orden).getWord()+".mp3";
         Reproductor.reproducir(word,this);
 
     }
@@ -67,7 +67,7 @@ public class Cardinal extends AppCompatActivity
         }
         else
         {
-            if(texto.getText().toString().equalsIgnoreCase(listado.get(orden).getWord()))
+            if(texto.getText().toString().equalsIgnoreCase(database.get(orden).getWord()))
             {
                 texto.setText("");
                 respuesta.setText("");
@@ -76,7 +76,7 @@ public class Cardinal extends AppCompatActivity
             else
             {
                 texto.setText("");
-                respuesta.setText(listado.get(orden).getMeaning());
+                respuesta.setText(database.get(orden).getMeaning());
                 actualizar(-1);
             }
         }
@@ -86,18 +86,18 @@ public class Cardinal extends AppCompatActivity
         int a =0;
         if (incremento == 1)
         {
-            listado.get(orden).setPointPrincipal(listado.get(orden).getPointPrincipal() + 1);
+            database.get(orden).setPointPrincipal(database.get(orden).getPointPrincipal() + 1);
         }
         else
         {
-            listado.get(orden).setStatusActive(0);
-            listado.get(orden).setStatusHang(1);
-            listado.get(orden).setPointPrincipal(listado.get(orden).getPointPrincipal() / 2);
+            database.get(orden).setStatus(database.get(orden).getStatus()-1);
+
+            database.get(orden).setPointPrincipal(database.get(orden).getPointPrincipal() / 2);
 
         }
-        listado.get(orden).setDate(Fecha.getFehaHoy());
+        database.get(orden).setDate(Fecha.getFehaHoy());
 
-        if (orden < listado.size()-1)
+        if (orden < database.size()-1)
         {
             reiniciar();
         }
@@ -115,22 +115,13 @@ public class Cardinal extends AppCompatActivity
     }
     private void guardar()
     {
-        listadoCompleto = Controlador.getListadoPrincipal(this);
-        for(Essential ess: listado)
-        {
-            listadoCompleto.get(ess.getOrder()).setDate(ess.getDate());
-            listadoCompleto.get(ess.getOrder()).setPointPrincipal(ess.getPointPrincipal());
-            listadoCompleto.get(ess.getOrder()).setStatusActive(ess.getStatusActive());
-            listadoCompleto.get(ess.getOrder()).setStatusHang(ess.getStatusHang());
-
-        }
-        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        Controlador.guardar(this,database,0);
         this.finish();
     }
 
     private void showAnswer()
     {
-        preg2.setText(Hanged.convertSentence(listado.get(orden).getMeaning(),listado.get(orden).getWord()));
+        preg2.setText(Hanged.convertSentence(database.get(orden).getMeaning(),database.get(orden).getWord()));
     }
 
 

@@ -34,7 +34,7 @@ import java.util.Random;
 
 public class Example extends AppCompatActivity {
     //Este atributo carga la lista de objeto que se van a procesar en este modulo
-    private static List<Essential> listado = new ArrayList<>();
+    private static List<Contenido> database;
     //Este atributo carga la base de datos completa
     private static List<Essential> listadoCompleto = new ArrayList<>();
     private List<List<String>> listaAleatoria;
@@ -82,31 +82,23 @@ public class Example extends AppCompatActivity {
     //El metodo cargar carga la informacion correspondiente a este modulo
     private void cargarData()
     {
+        database = new ArrayList<>();
+        database = Controlador.getFilteredDatabase();
         int a =0;
-        if(MainActivity.getObjetivo()==0)
-        {
-            listado = Controlador.moduloEjemplo(this);
-        }
-        else
-        {
-            listado = Controlador.moduloDefinition(this);
-        }
-
     }
 
     private void cargarPalabrasConjugadas()
     {
-
+        int a =0;
         palabraConjugadas = new ArrayList<>();
         palabraConjugadas= Data.readFilePalabrasConjugadas(this);
-
     }
     public void depurarPalabrasConjugada()
     {
         String libro = "";
         String unidad = "";
-        libro = listado.get(0).getBook();
-        unidad = listado.get(0).getUnit();
+        libro = database.get(0).getBook();
+        unidad = database.get(0).getUnit();
         palabraConjugadasResumen = new ArrayList<>();
 
         for(PalabraConjugada pal: palabraConjugadas)
@@ -120,7 +112,7 @@ public class Example extends AppCompatActivity {
 
     private void setCantidad()
     {
-        cantidad = listado.size()*round;
+        cantidad = database.size()*round;
         desplegarCantidad(cantidad);
 
     }
@@ -132,7 +124,7 @@ public class Example extends AppCompatActivity {
     //Este metodo crea la tabla de posiciones del tamano de listado de elementos a procesar
     private void inicializarTablaPosiciones()
     {
-        tablaPosiciones = new int[listado.size()];
+        tablaPosiciones = new int[database.size()];
     }
 
     // Este metodo selecciona un elemento para se procesado, el cual debe haber aparecido menor o igual
@@ -153,13 +145,13 @@ public class Example extends AppCompatActivity {
     private void descomponerFrase()
     {
         listaPalabras = new ArrayList<>();
-        if(MainActivity.getObjetivo()==0)
+        if(MainActivity.getObjetivo()==5)
         {
-            listaPalabras = Arrays.asList(listado.get(objetivo).getExample().split(" "));
+            listaPalabras = Arrays.asList(database.get(objetivo).getMeaning().split(" "));
         }
         else
         {
-            listaPalabras = Arrays.asList(listado.get(objetivo).getMeaning().split(" "));
+            listaPalabras = Arrays.asList(database.get(objetivo).getExample().split(" "));
         }
 
     }
@@ -314,14 +306,14 @@ public class Example extends AppCompatActivity {
     //Este metodo reproduce un audio especifico
     private void reproducir()
     {
-        String palabra = listado.get(objetivo).getWord();
-        if(MainActivity.getObjetivo()==0)
+        String palabra = database.get(objetivo).getWord();
+        if(MainActivity.getObjetivo()==5)
         {
-            Reproductor.reproducir(listado.get(objetivo).getWord()+"_E.mp3",this);
+            Reproductor.reproducir(database.get(objetivo).getWord()+"_D.mp3",this);
         }
         else
         {
-            Reproductor.reproducir(listado.get(objetivo).getWord()+"_D.mp3",this);
+            Reproductor.reproducir(database.get(objetivo).getWord()+"_E.mp3",this);
         }
 
     }
@@ -330,26 +322,10 @@ public class Example extends AppCompatActivity {
 
     private void guardar()
     {
-        listadoCompleto = Controlador.getListadoPrincipal(this);
-        for(Essential ess: listado)
-        {
-            if(MainActivity.getObjetivo()==0)
-            {
-                listadoCompleto.get(ess.getOrder()).setStatusExample(1);
-                //listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
-            }
-            else
-            {
-                listadoCompleto.get(ess.getOrder()).setStatusExample(2);
-                listadoCompleto.get(ess.getOrder()).setStatusDefinition(1);
-            }
 
-            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
-
-        }
-
-        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        Controlador.guardar(this,database,1);
         this.finish();
+
     }
 
     private boolean buscarTermino(String termino)

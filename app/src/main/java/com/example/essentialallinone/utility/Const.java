@@ -23,7 +23,7 @@ public  class Const
     public static final int TAMAGNO_FUENTE = 18;
     //public static String URL_AUDIOS = "/sdcard/Music/"; // telefono
     public static String URL_AUDIOS = "/sdcard/DBAudio/Audio/"; // emulador
-    public static String URL_DATABASE = "/sdcard/DB/DB.csv";
+    public static String URL_DATABASE = "/sdcard/DB/DBNoStatic.csv";
     public static String URL_CUENTO = "/sdcard/DB/Todas.csv";
 
     public static String SEPARADOR = ",";

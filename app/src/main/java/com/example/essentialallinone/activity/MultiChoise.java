@@ -23,13 +23,15 @@ import java.util.List;
 import java.util.Random;
 
 public class MultiChoise extends AppCompatActivity {
-    private List<Essential> listado = new ArrayList<>();
-    private List<Essential> listaRespuestas = new ArrayList<>();
+    //private List<Essential> listado = new ArrayList<>();
+    private  List<Contenido> database;
+    private List<Contenido> listaRespuestas = new ArrayList<>();
     private List<Essential> listadoCompleto = new ArrayList<>();
     private Random aleatorio = new Random();
     private int objetivo =0;
     private int tablaPosiciones[];
     TextView respuestaCorrecta;
+    private  int round =2;
 
 
     TextView pregunta;
@@ -48,6 +50,7 @@ public class MultiChoise extends AppCompatActivity {
         seleccionarOpsiones();
         desplegarPregunta();
         desplegarOpciones();
+
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -60,13 +63,14 @@ public class MultiChoise extends AppCompatActivity {
     //El metodo cargar carga la informacion correspondiente a este modulo
     private void cargar()
     {
-        listado = Controlador.moduloMultiChoise(this);
+        database = new ArrayList<>();
+        database = Controlador.getFilteredDatabase();
     }
 
     //Este metodo crea la tabla de posiciones del tamano de listado de elementos a procesar
     private void inicializarTablaPosiciones()
     {
-        tablaPosiciones = new int[listado.size()];
+        tablaPosiciones = new int[database.size()];
     }
 
     // Este metodo selecciona un elemento para se procesado, el cual debe haber aparecido menor o igual
@@ -88,20 +92,20 @@ public class MultiChoise extends AppCompatActivity {
     {
         listaRespuestas.clear();
         int obj = 0;
-        listaRespuestas.add(listado.get(objetivo));
+        listaRespuestas.add(database.get(objetivo));
         while (listaRespuestas.size()<Const.CANTIDAD_RESPUESTAS)
         {
-            obj = aleatorio.nextInt(listado.size());
-            if(!listaRespuestas.contains(listado.get(obj)))
+            obj = aleatorio.nextInt(database.size());
+            if(!listaRespuestas.contains(database.get(obj)))
             {
-               listaRespuestas.add(listado.get(obj));
+               listaRespuestas.add(database.get(obj));
             }
         }
     }
 
     private void desplegarPregunta()
     {
-        pregunta.setText(convertSentence(listado.get(objetivo).getMeaning(),listado.get(objetivo).getWord()));
+        pregunta.setText(convertSentence(database.get(objetivo).getMeaning(),database.get(objetivo).getWord()));
         pregunta.setTextSize(18);
     }
 
@@ -127,7 +131,7 @@ public class MultiChoise extends AppCompatActivity {
 
     private void comprobar(String texto)
     {
-        if(texto.equalsIgnoreCase(listado.get(objetivo).getWord()))
+        if(texto.equalsIgnoreCase(database.get(objetivo).getWord()))
         {
             respuestaCorrecta.setText("");
             respuestaCorrecta.setTextSize(18);
@@ -137,7 +141,7 @@ public class MultiChoise extends AppCompatActivity {
         }
         else
         {
-            respuestaCorrecta.setText(listado.get(objetivo).getMeaning());
+            respuestaCorrecta.setText(database.get(objetivo).getMeaning());
             respuestaCorrecta.setTextSize(18);
            reiniciar();
         }
@@ -169,14 +173,8 @@ public class MultiChoise extends AppCompatActivity {
     }
     private void guardar()
     {
-        listadoCompleto = Controlador.getListadoPrincipal(this);
-        for(Essential ess: listado)
-        {
-            listadoCompleto.get(ess.getOrder()).setStatusMultiChoise(1);
-            listadoCompleto.get(ess.getOrder()).setStatusComplete(2);
-            listadoCompleto.get(ess.getOrder()).setDate(Fecha.getFehaHoy());
-        }
-        Data.saveFile(listadoCompleto, Const.URL_DATABASE,this);
+        Controlador.guardar(this,database,1);
+        this.finish();
     }
 
     public boolean comprobarSiFinalizar()
@@ -184,7 +182,7 @@ public class MultiChoise extends AppCompatActivity {
         boolean flag = true;
         for(int puntuacion: tablaPosiciones)
         {
-            if(puntuacion<Const.ROUNDS)
+            if(puntuacion<round)
             {
                 flag = false;
                 break;
