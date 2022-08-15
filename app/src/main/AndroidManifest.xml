@@ -17,43 +17,46 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EssentialAllInOne">
         <activity
-            android:name=".activity.InfoD"
+            android:name="com.example.NewAllinOne.activity.Complete"
             android:exported="false" />
         <activity
-            android:name=".Ejercicios"
+            android:name="com.example.NewAllinOne.activity.Match"
             android:exported="false" />
         <activity
-            android:name=".activity.Info"
+            android:name="com.example.NewAllinOne.activity.Cardinal"
             android:exported="false" />
         <activity
-            android:name=".activity.Complete"
+            android:name="com.example.NewAllinOne.activity.Activate"
             android:exported="false" />
         <activity
-            android:name=".activity.Cardinal"
+            android:name="com.example.NewAllinOne.activity.Hanged"
             android:exported="false" />
         <activity
-            android:name=".activity.Activate"
+            android:name="com.example.NewAllinOne.activity.ReadComplex"
             android:exported="false" />
         <activity
-            android:name=".activity.Hanged"
+            android:name="com.example.NewAllinOne.activity.Translation"
             android:exported="false" />
         <activity
-            android:name=".activity.Match"
+            android:name="com.example.NewAllinOne.activity.Example"
             android:exported="false" />
         <activity
-            android:name=".activity.ListeningAndReading"
+            android:name="com.example.NewAllinOne.activity.Definition"
             android:exported="false" />
         <activity
-            android:name=".activity.MultiChoise"
+            android:name="com.example.NewAllinOne.activity.TranscriptionMc"
             android:exported="false" />
         <activity
-            android:name=".activity.Definition"
+            android:name="com.example.NewAllinOne.activity.MultiChoice"
             android:exported="false" />
         <activity
-            android:name=".activity.Example"
+            android:name="com.example.NewAllinOne.activity.Listen"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.NewAllinOne.activity.Read"
+            android:exported="false" />
+        <activity
+            android:name="com.example.NewAllinOne.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="right|end"
     android:orientation="vertical"
-    tools:context=".activity.Example">
+    tools:context="com.example.NewAllinOne.activity.Example">
 
     <TextView
         android:id="@+id/faltante"

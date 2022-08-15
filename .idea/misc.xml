@@ -16,13 +16,19 @@
         <entry key="app/src/main/res/layout/activity_hanged.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_info.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_info_d.xml" value="0.2578125" />
+        <entry key="app/src/main/res/layout/activity_listen.xml" value="0.2578125" />
         <entry key="app/src/main/res/layout/activity_listen_and_read.xml" value="0.24139492753623187" />
         <entry key="app/src/main/res/layout/activity_listening_and_reading.xml" value="0.16893115942028986" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_match.xml" value="0.16893115942028986" />
         <entry key="app/src/main/res/layout/activity_meaning.xml" value="0.20516304347826086" />
+        <entry key="app/src/main/res/layout/activity_multi_choice.xml" value="0.2578125" />
         <entry key="app/src/main/res/layout/activity_multi_choise.xml" value="0.19972826086956522" />
+        <entry key="app/src/main/res/layout/activity_read.xml" value="0.1203125" />
         <entry key="app/src/main/res/layout/activity_read_and_listener.xml" value="0.2776268115942029" />
+        <entry key="app/src/main/res/layout/activity_read_complex.xml" value="0.2578125" />
+        <entry key="app/src/main/res/layout/activity_transcription_mc.xml" value="0.2578125" />
+        <entry key="app/src/main/res/layout/activity_translation.xml" value="0.2578125" />
         <entry key="app/src/main/res/layout/cuento_completo.xml" value="0.1802536231884058" />
       </map>
     </option>

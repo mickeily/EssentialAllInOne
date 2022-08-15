@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.Hanged">
+    tools:context="com.example.NewAllinOne.activity.Hanged">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,6 +21,14 @@
             android:layout_gravity="right"
             android:gravity="right"
             android:text="0%" />
+
+        <TextView
+            android:id="@+id/position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="l" />
+
     </LinearLayout>
 
     <LinearLayout
